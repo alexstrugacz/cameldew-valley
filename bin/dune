@@ -1,0 +1,4 @@
+(executable
+ (public_name cameldew-valley)
+ (name main)
+ (libraries cameldew_valley))

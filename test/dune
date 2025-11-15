@@ -1,0 +1,2 @@
+(test
+ (name test_cameldew_valley) (libraries ounit2 cameldew_valley))
