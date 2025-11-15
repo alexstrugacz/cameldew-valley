@@ -1,2 +1,3 @@
 (library
- (name cameldew_valley))
+ (name cameldew_valley)
+ (libraries model controller view raylib unix))

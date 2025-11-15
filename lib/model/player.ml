@@ -1,0 +1,89 @@
+(** Player state and inventory management *)
+
+type direction =
+  | North
+  | South
+  | East
+  | West
+
+type inventory_slot = {
+  seed_type : Crop.crop_kind option; (* None = empty slot *)
+  count : int;
+}
+
+type player = {
+  x : int;
+  y : int;
+  facing : direction;
+  coins : int;
+  inventory : inventory_slot array; (* Fixed size: 5 slots *)
+  selected_slot : int; (* 0-4 *)
+}
+
+(** [create_player x y starting_coins] creates a new player at position (x, y)
+*)
+let create_player x y starting_coins =
+  {
+    x;
+    y;
+    facing = South;
+    coins = starting_coins;
+    inventory = Array.init 5 (fun _ -> { seed_type = None; count = 0 });
+    selected_slot = 0;
+  }
+
+(** [move_player player dir board_width board_height] moves player in the
+    selected direction *)
+let move_player player dir board_width board_height =
+  let new_x, new_y =
+    match dir with
+    | North -> (player.x, max 0 (player.y - 1))
+    | South -> (player.x, min (board_height - 1) (player.y + 1))
+    | West -> (max 0 (player.x - 1), player.y)
+    | East -> (min (board_width - 1) (player.x + 1), player.y)
+  in
+  { player with x = new_x; y = new_y; facing = dir }
+
+(** [add_seeds player kind count] adds seeds to player's inventory *)
+let add_seeds player kind count =
+  (* Try to find existing slot with this seed type *)
+  let rec find_slot idx =
+    if idx >= Array.length player.inventory then None
+    else
+      let slot = player.inventory.(idx) in
+      match slot.seed_type with
+      | Some k when k = kind -> Some idx
+      | None -> Some idx (* Empty slot *)
+      | _ -> find_slot (idx + 1)
+  in
+  match find_slot 0 with
+  | None -> None (* Inventory full *)
+  | Some idx ->
+      player.inventory.(idx) <-
+        { seed_type = Some kind; count = player.inventory.(idx).count + count };
+      Some player
+
+(** [remove_seed player slot_idx] removes one seed from the given slot;
+    primarily for planting*)
+let remove_seed player slot_idx =
+  if slot_idx < 0 || slot_idx >= Array.length player.inventory then None
+  else
+    let slot = player.inventory.(slot_idx) in
+    match slot.seed_type with
+    | None -> None (* Empty slot *)
+    | Some kind when slot.count > 0 ->
+        player.inventory.(slot_idx) <-
+          {
+            seed_type = (if slot.count = 1 then None else Some kind);
+            count = slot.count - 1;
+          };
+        Some (player, kind)
+    | _ -> None
+
+(** [harvest_and_sell player crop] immediately sells the crop and adds coins *)
+let harvest_and_sell player crop =
+  let sell_price = crop.Crop.stats.sell_price in
+  { player with coins = player.coins + sell_price }
+
+(** [get_current_tile player] returns player's current position *)
+let get_current_tile player = (player.x, player.y)
