@@ -1,8 +1,0 @@
-lib: [
-  "_build/install/default/lib/cameldew-valley/META"
-  "_build/install/default/lib/cameldew-valley/dune-package"
-  "_build/install/default/lib/cameldew-valley/opam"
-]
-bin: [
-  "_build/install/default/bin/cameldew-valley"
-]
