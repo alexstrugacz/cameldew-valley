@@ -104,7 +104,12 @@ let draw_player (player : P.player) (delta_time : float) (moving : bool) =
   else current_frame := 0;
 
   (* Choose texture *)
-  let tex = if moving then frames.walk.(!current_frame) else frames.idle in
+
+  (* Ensure current_frame is in-bounds by modding by length of the frames array
+     (this is necessary because we have 6 frames for East/West and 8 frames for
+     North/South) *)
+  let frame_index = !current_frame mod Array.length frames.walk in
+  let tex = if moving then frames.walk.(frame_index) else frames.idle in
 
   (* Draw *)
   draw_texture_ex tex
