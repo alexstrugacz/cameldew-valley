@@ -1,12 +1,14 @@
-
 type action =
   | Move of Model.Player.direction
   | Interact
   | Toggle_Buy_Sell
   | Select_slot of int
+  | Pause
 
-(** [check_input] immediately returns a list of each [action] taken by the user *)
 val check_input : unit -> action list
+(** [check_input] immediately returns a list of each [action] taken by the user
+*)
 
-(** [print_inputs] prints each [action] from the user input to the console (for testing) *)
 val print_inputs : action list -> unit
+(** [print_inputs] prints each [action] from the user input to the console (for
+    testing) *)

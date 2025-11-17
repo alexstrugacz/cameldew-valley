@@ -2,33 +2,42 @@ open Input_handler
 module P = Model.Player
 module B = Model.Board
 module Crop = Model.Crop
+module GS = Model.Game_state
 
 (* Controller *)
 
-let move player direction width height =
-  let new_p = P.move_player player direction width height in
+(* let move player direction width height = let new_p = P.move_player player
+   direction width height in Printf.printf "The player's location is: (%s, %s) "
+   (string_of_int new_p.x) (string_of_int new_p.y); new_p *)
+
+let move (gs : GS.game_state) (dir : P.direction) : GS.game_state =
+  let new_p =
+    P.move_player gs.GS.player dir gs.GS.board_width gs.GS.board_height
+  in
   Printf.printf "The player's location is: (%s, %s) " (string_of_int new_p.x)
     (string_of_int new_p.y);
-  new_p
+  { gs with GS.player = new_p }
 
-let take_action board_width board_height player action =
-  match action with
-  | Move P.North -> move player P.North board_width board_height
-  | Move P.West -> move player P.West board_width board_height
-  | Move P.South -> move player P.South board_width board_height
-  | Move P.East -> move player P.East board_width board_height
-  | Interact ->
-      print_endline "handle interact with shop, soil, crop, etc";
-      player
-  | Select_slot slot ->
-      print_endline "select a slot";
-      player
-  | Toggle_Buy_Sell ->
-      print_endline "toggle buy sell";
-      player
+let take_action (gs : GS.game_state) (action : Input_handler.action) :
+    GS.game_state =
+  match (gs.GS.phase, action) with
+  | _, Pause -> GS.toggle_pause gs
+  | GS.Playing, Move dir -> move gs dir
+  | GS.Playing, Interact ->
+      (* TODO: interaction logic *)
+      gs
+  | GS.Playing, Toggle_Buy_Sell ->
+      (* TODO: open / close shop *)
+      gs
+  | GS.Playing, Select_slot i ->
+      (* TODO: change selected inventory slot to i *)
+      gs
+  | GS.Paused, _ | GS.NotPlaying, _ -> gs
 
-let handle_actions board_width board_height player action_list =
-  List.fold_left (take_action board_width board_height) player action_list
+(* Apply a whole list of actions in sequence *)
+let handle_actions (gs : GS.game_state) (actions : Input_handler.action list) :
+    GS.game_state =
+  List.fold_left take_action gs actions
 
 (* Create 12 crops. For now, all are strawberries. *)
 let create_initial_crops (num_crops : int) : Crop.crop_instance list =

@@ -5,6 +5,7 @@ type action =
   | Interact
   | Toggle_Buy_Sell
   | Select_slot of int
+  | Pause
 
 (* Raylib will shadow types from our player model, need to assign our player
    model to an alias to avoid shadowing! *)
@@ -33,6 +34,8 @@ let check_input () =
   if is_key_pressed Key.Four then inputs := Select_slot 3 :: !inputs;
   if is_key_pressed Key.Five then inputs := Select_slot 4 :: !inputs;
 
+  if is_key_pressed Key.P then inputs := Pause :: !inputs;
+
   !inputs
 
 let pp_actions_from_inputs = function
@@ -43,6 +46,7 @@ let pp_actions_from_inputs = function
   | Interact -> "Interact"
   | Toggle_Buy_Sell -> "Toggle Buy/Sell"
   | Select_slot slot -> Printf.sprintf "Select Slot %d" (slot + 1)
+  | Pause -> "Pause"
 
 let print_inputs actions =
   List.iter

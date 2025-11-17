@@ -4,6 +4,7 @@ module PR = View.Player_render
 module CR = View.Crop_render
 module I = Controller.Input_handler
 module C = Controller.Game_controller
+module GS = Model.Game_state
 open Raylib
 
 let () =
@@ -25,7 +26,10 @@ let () =
   CR.load_assets ();
   let board_width = 1280 in
   let board_height = 720 in
-  let player = ref (P.create_player 100 100 0) in
+  let initial_player = P.create_player 100 100 0 in
+  let game_state =
+    ref (GS.init board_width board_height initial_player |> GS.start)
+  in
   let crops = ref (C.create_initial_crops 12) in
   let crop_grow_interval = 5.0 in
   let last_crop_grow_time = ref 0.0 in
@@ -37,7 +41,7 @@ let () =
     (* GAME LOGIC: PLAYER INPUTS *)
     let actions = I.check_input () in
     I.print_inputs actions;
-    player := C.handle_actions board_width board_height !player actions;
+    game_state := C.handle_actions !game_state actions;
 
     (* GAME LOGIC: CROP GROWTH (every 5s) *)
     if elapsed -. !last_crop_grow_time >= crop_grow_interval then (
@@ -69,7 +73,8 @@ let () =
 
     (* Draw player on top *)
     let delta_time = get_frame_time () in
-    PR.draw_player !player delta_time moving;
+    let player = !game_state.GS.player in
+    PR.draw_player player delta_time moving;
 
     (* Draw crops on top *)
     (* TODO: currently, the crops have hardcoded draw locations. 
