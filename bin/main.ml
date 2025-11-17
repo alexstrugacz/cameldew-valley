@@ -1,5 +1,7 @@
 module P = Model.Player
+module Crop = Model.Crop
 module PR = View.Player_render
+module CR = View.Crop_render
 module I = Controller.Input_handler
 module C = Controller.Game_controller
 open Raylib
@@ -20,11 +22,12 @@ let () =
 
   PR.load_assets ();
 
+  CR.load_assets ();
   let board_width = 1280 in
   let board_height = 720 in
   let player = ref (P.create_player 100 100 0) in
   let crops = ref (C.create_initial_crops 12) in
-  let crop_grow_interval = 10.0 in
+  let crop_grow_interval = 5.0 in
   let last_crop_grow_time = ref 0.0 in
 
   while not (window_should_close ()) do
@@ -36,7 +39,7 @@ let () =
     I.print_inputs actions;
     player := C.handle_actions board_width board_height !player actions;
 
-    (* GAME LOGIC: CROP GROWTH *)
+    (* GAME LOGIC: CROP GROWTH (every 5s) *)
     if elapsed -. !last_crop_grow_time >= crop_grow_interval then (
       crops := C.try_grow_all_crops !crops;
       last_crop_grow_time := elapsed);
@@ -68,12 +71,33 @@ let () =
     let delta_time = get_frame_time () in
     PR.draw_player !player delta_time moving;
 
-    (* TODO: Draw crops on top *)
+    (* Draw crops on top *)
+    (* TODO: currently, the crops have hardcoded draw locations. 
+    We will need to draw them where the user planted them in the future. *)
+
+    (* Row 1 *)
+    CR.draw_crop (List.nth !crops 0) 400.0 250.0;
+    CR.draw_crop (List.nth !crops 1) 500.0 250.0;
+    CR.draw_crop (List.nth !crops 2) 600.0 250.0;
+    CR.draw_crop (List.nth !crops 3) 700.0 250.0;
+
+    (* Row 2 *)
+    CR.draw_crop (List.nth !crops 4) 400.0 350.0;
+    CR.draw_crop (List.nth !crops 5) 500.0 350.0;
+    CR.draw_crop (List.nth !crops 6) 600.0 350.0;
+    CR.draw_crop (List.nth !crops 7) 700.0 350.0;
+
+    (* Row 3 *)
+    CR.draw_crop (List.nth !crops 8) 400.0 450.0;
+    CR.draw_crop (List.nth !crops 9) 500.0 450.0;
+    CR.draw_crop (List.nth !crops 10) 600.0 450.0;
+    CR.draw_crop (List.nth !crops 11) 700.0 450.0;
     end_drawing ()
   done;
 
   (* ------------------------- *)
   (* CLEANUP *)
   PR.unload_assets ();
+  CR.unload_assets ();
   Array.iter unload_texture frames;
   close_window ()

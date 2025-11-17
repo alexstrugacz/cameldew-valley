@@ -1,4 +1,4 @@
-(** Crop system for farm crops *) 
+(** Crop system for farm crops *)
 
 type growth_stage = int (* 0 = just planted, max = harvestable *)
 
@@ -45,7 +45,7 @@ let crop_database = function
       {
         kind = Strawberry;
         growth_rate = 0.4;
-        max_stage = 2;
+        max_stage = 4;
         buy_price = 5;
         sell_price = 12;
       }
