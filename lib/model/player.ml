@@ -37,10 +37,10 @@ let create_player x y starting_coins =
 let move_player player dir board_width board_height =
   let new_x, new_y =
     match dir with
-    | North -> (player.x, max 0 (player.y - 1))
-    | South -> (player.x, min (board_height - 1) (player.y + 1))
-    | West -> (max 0 (player.x - 1), player.y)
-    | East -> (min (board_width - 1) (player.x + 1), player.y)
+    | North -> (player.x, max 0 (player.y - 4))
+    | South -> (player.x, min (board_height - 1) (player.y + 4))
+    | West -> (max 0 (player.x - 4), player.y)
+    | East -> (min (board_width - 1) (player.x + 4), player.y)
   in
   { player with x = new_x; y = new_y; facing = dir }
 

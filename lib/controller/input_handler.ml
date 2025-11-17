@@ -12,11 +12,13 @@ let check_input () =
   let open Raylib in
   let inputs = ref [] in
 
-  if is_key_pressed Key.W then inputs := Move P.North :: !inputs;
-  if is_key_pressed Key.A then inputs := Move P.West :: !inputs;
-  if is_key_pressed Key.S then inputs := Move P.South :: !inputs;
-  if is_key_pressed Key.D then inputs := Move P.East :: !inputs;
+  (* Use is_key_down instead of is_key_pressed for continuous movement *)
+  if is_key_down Key.W then inputs := Move P.North :: !inputs;
+  if is_key_down Key.A then inputs := Move P.West :: !inputs;
+  if is_key_down Key.S then inputs := Move P.South :: !inputs;
+  if is_key_down Key.D then inputs := Move P.East :: !inputs;
 
+  (* Other actions can stay as is, since you might not want them repeating *)
   if is_key_pressed Key.F then inputs := Interact :: !inputs;
   if is_key_pressed Key.Left_shift then inputs := Toggle_Buy_Sell :: !inputs;
 
@@ -25,6 +27,7 @@ let check_input () =
   if is_key_pressed Key.Three then inputs := Select_slot 2 :: !inputs;
   if is_key_pressed Key.Four then inputs := Select_slot 3 :: !inputs;
   if is_key_pressed Key.Five then inputs := Select_slot 4 :: !inputs;
+
   !inputs
 
 let pp_actions_from_inputs = function
