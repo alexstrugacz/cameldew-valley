@@ -18,6 +18,11 @@ let check_input () =
   if is_key_down Key.S then inputs := Move P.South :: !inputs;
   if is_key_down Key.D then inputs := Move P.East :: !inputs;
 
+  if is_key_down Key.Up then inputs := Move P.North :: !inputs;
+  if is_key_down Key.Left then inputs := Move P.West :: !inputs;
+  if is_key_down Key.Down then inputs := Move P.South :: !inputs;
+  if is_key_down Key.Right then inputs := Move P.East :: !inputs;
+
   (* Other actions can stay as is, since you might not want them repeating *)
   if is_key_pressed Key.F then inputs := Interact :: !inputs;
   if is_key_pressed Key.Left_shift then inputs := Toggle_Buy_Sell :: !inputs;
