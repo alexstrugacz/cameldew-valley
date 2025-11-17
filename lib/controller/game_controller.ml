@@ -2,20 +2,13 @@ open Input_handler
 module P = Model.Player
 module B = Model.Board
 
-(* TODO: FIGURE OUT IF WE CAN HARDCODE ALL THIS CONSTANT STUFF ELSEWHERE, MAYBE
-   MAIN? *)
+(* Controller *)
 
-(** CREATE A PLAYER FOR THE GAME, TODO: FIGURE OUT IF WE NEED TO CHANGE THIS
-    LATER? *)
-
-(* DO WE WANT TO KEEP THIS PURELY FUNCTIONAL APPROACH OR INTRODUCE MUTABILITY? *)
-(* start player at (100, 100) *)
-
-(* let player = P.create_player 100 100 0 let board_width = 1280 let
-   board_height = 720 let board = B.create_board board_width board_height *)
-
-(* Check the current actions taken by the user *)
-let move = P.move_player
+let move player direction width height =
+  let new_p = P.move_player player direction width height in
+  Printf.printf "The player's location is: (%s, %s) " (string_of_int new_p.x)
+    (string_of_int new_p.y);
+  new_p
 
 let take_action board_width board_height player action =
   match action with
