@@ -23,15 +23,23 @@ let () =
   let board_width = 1280 in
   let board_height = 720 in
   let player = ref (P.create_player 100 100 0) in
+  let crops = ref (C.create_initial_crops 12) in
+  let crop_grow_interval = 10.0 in
+  let last_crop_grow_time = ref 0.0 in
 
   while not (window_should_close ()) do
     let elapsed = get_time () -. start_time in
 
     (* ------------------------- *)
-    (* GAME LOGIC *)
+    (* GAME LOGIC: PLAYER INPUTS *)
     let actions = I.check_input () in
     I.print_inputs actions;
     player := C.handle_actions board_width board_height !player actions;
+
+    (* GAME LOGIC: CROP GROWTH *)
+    if elapsed -. !last_crop_grow_time >= crop_grow_interval then (
+      crops := C.try_grow_all_crops !crops;
+      last_crop_grow_time := elapsed);
 
     (* Determine if the player is moving *)
     let moving =
@@ -60,6 +68,7 @@ let () =
     let delta_time = get_frame_time () in
     PR.draw_player !player delta_time moving;
 
+    (* TODO: Draw crops on top *)
     end_drawing ()
   done;
 

@@ -1,6 +1,7 @@
 open Input_handler
 module P = Model.Player
 module B = Model.Board
+module Crop = Model.Crop
 
 (* Controller *)
 
@@ -28,3 +29,14 @@ let take_action board_width board_height player action =
 
 let handle_actions board_width board_height player action_list =
   List.fold_left (take_action board_width board_height) player action_list
+
+(* Create 12 crops. For now, all are strawberries. *)
+let create_initial_crops (num_crops : int) : Crop.crop_instance list =
+  List.init 12 (fun i -> Crop.create_crop Crop.Strawberry)
+
+let try_grow_crop (crop : Crop.crop_instance) : Crop.crop_instance =
+  Crop.try_grow crop
+
+let try_grow_all_crops (crop_list : Crop.crop_instance list) :
+    Crop.crop_instance list =
+  List.map try_grow_crop crop_list
