@@ -1,4 +1,5 @@
 open Raylib
+module I = Controller.Input_handler
 
 let () =
   init_window 1280 720 "Cameldew Valley!";
@@ -20,6 +21,9 @@ let () =
 
   while not (window_should_close ()) do
     let elapsed = get_time () -. start_time in
+
+    let actions = I.check_input () in
+    I.print_inputs actions;
 
     let cycle_time = durations.(0) +. durations.(1) in
     let t = mod_float elapsed cycle_time in
