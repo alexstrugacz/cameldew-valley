@@ -1,4 +1,4 @@
-(** Crop system for farm crops *)
+(** Crop system for farm crops *) 
 
 type growth_stage = int (* 0 = just planted, max = harvestable *)
 
