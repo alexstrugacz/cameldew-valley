@@ -53,8 +53,8 @@ let load_assets () =
             load_texture "assets/player/right-walk-left1.png";
             load_texture "assets/player/right-walk-left2.png";
             load_texture "assets/player/right-idle.png";
-            load_texture "assets/player/right-walk-right1.png";
             load_texture "assets/player/right-walk-right2.png";
+            load_texture "assets/player/right-walk-right1.png";
             load_texture "assets/player/right-idle.png";
           |];
       };
@@ -65,8 +65,8 @@ let load_assets () =
             load_texture "assets/player/left-walk-left1.png";
             load_texture "assets/player/left-walk-left2.png";
             load_texture "assets/player/left-idle.png";
-            load_texture "assets/player/left-walk-right1.png";
             load_texture "assets/player/left-walk-right2.png";
+            load_texture "assets/player/left-walk-right1.png";
             load_texture "assets/player/left-idle.png";
           |];
       };
