@@ -24,8 +24,8 @@ let () =
   PR.load_assets ();
 
   CR.load_assets ();
-  let board_width = 1280 in
-  let board_height = 720 in
+  let board_width = 1200 in
+  let board_height = 600 in
   let initial_player = P.create_player 100 100 0 in
   let game_state =
     ref (GS.init board_width board_height initial_player |> GS.start)
