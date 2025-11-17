@@ -1,1 +1,37 @@
-include Input_handler
+open Input_handler
+module P = Model.Player
+module B = Model.Board
+
+(* TODO: FIGURE OUT IF WE CAN HARDCODE ALL THIS CONSTANT STUFF ELSEWHERE, MAYBE
+   MAIN? *)
+
+(** CREATE A PLAYER FOR THE GAME, TODO: FIGURE OUT IF WE NEED TO CHANGE THIS
+    LATER? *)
+
+(* DO WE WANT TO KEEP THIS PURELY FUNCTIONAL APPROACH OR INTRODUCE MUTABILITY? *)
+(* start player at (100, 100) *)
+
+(* let player = P.create_player 100 100 0 let board_width = 1280 let
+   board_height = 720 let board = B.create_board board_width board_height *)
+
+(* Check the current actions taken by the user *)
+let move = P.move_player
+
+let take_action board_width board_height player action =
+  match action with
+  | Move P.North -> move player P.North board_width board_height
+  | Move P.West -> move player P.West board_width board_height
+  | Move P.South -> move player P.South board_width board_height
+  | Move P.East -> move player P.East board_width board_height
+  | Interact ->
+      print_endline "handle interact with shop, soil, crop, etc";
+      player
+  | Select_slot slot ->
+      print_endline "select a slot";
+      player
+  | Toggle_Buy_Sell ->
+      print_endline "toggle buy sell";
+      player
+
+let handle_actions board_width board_height player action_list =
+  List.fold_left (take_action board_width board_height) player action_list
