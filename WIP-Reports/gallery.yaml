@@ -1,0 +1,39 @@
+---
+# Members of team-22-cobblestone-chi
+group:  
+  - name: Alex Strugacz
+    netid: aas396
+  - name: Jiwon Jeong
+    netid: jj775
+  - name: Donathan Truong
+    netid: dnt34
+  - name: Jimmy Chen
+    netid: jc3673
+
+pm:
+  name: Kea-Roy Ong
+  netid: ko353
+
+publish: true
+
+title: "Cameldew Valley"
+
+git-repo: "https://github.com/alexstrugacz/cameldew-valley"
+
+demo-video-url: "TO DO *** FILL THIS IN WHEN DEMO VIDEO CREATED"
+
+desc: >
+  Our project is a miniature farming simulation game inspired by Stardew Valley. 
+  Players move around a two-dimensional grid, plant seeds on soil tiles, and harvest 
+  rops as they reach maturity. Each crop type features distinct growth rates and buy/sell 
+  prices, encouraging different economic strategies. 
+  
+  The player begins with a limited number of coins and can purchase additional seeds from 
+  an in-world shop. As crops grow, mature, and are sold, the player expands their inventory 
+  and overall wealth. The goal is to accumulate as many coins as possible before the game 
+  timer expires.
+
+  Movement and interaction use standard keyboard controls, with a dedicated action key that 
+  adapts to the tile in front of the player, allowing them to open the shop, plant seeds, 
+  or harvest fully grown crops. The result is a compact but flexible farming experience 
+  that blends planning, exploration, and resource management.
