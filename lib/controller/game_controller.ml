@@ -2,6 +2,8 @@ open Input_handler
 module P = Model.Player
 module B = Model.Board
 
+(* Controller *)
+
 (* TODO: FIGURE OUT IF WE CAN HARDCODE ALL THIS CONSTANT STUFF ELSEWHERE, MAYBE
    MAIN? *)
 
