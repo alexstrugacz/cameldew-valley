@@ -33,9 +33,15 @@ let () =
   let crops = ref (C.create_initial_crops 12) in
   let crop_grow_interval = 5.0 in
   let last_crop_grow_time = ref 0.0 in
+  let game_time = ref 0.0 in
 
   while not (window_should_close ()) do
     let elapsed = get_time () -. start_time in
+    let delta_time = get_frame_time () in
+
+    (* Advance “in-game” time only while playing *)
+    if !game_state.GS.phase = GS.Playing then
+      game_time := !game_time +. delta_time;
 
     (* ------------------------- *)
     (* GAME LOGIC: PLAYER INPUTS *)
@@ -44,9 +50,12 @@ let () =
     game_state := C.handle_actions !game_state actions;
 
     (* GAME LOGIC: CROP GROWTH (every 5s) *)
-    if elapsed -. !last_crop_grow_time >= crop_grow_interval then (
+    if
+      !game_state.GS.phase = GS.Playing
+      && !game_time -. !last_crop_grow_time >= crop_grow_interval
+    then (
       crops := C.try_grow_all_crops !crops;
-      last_crop_grow_time := elapsed);
+      last_crop_grow_time := !game_time);
 
     (* Determine if the player is moving *)
     let moving =
@@ -72,7 +81,6 @@ let () =
     draw_texture frames.(frame_index) 0 0 Color.white;
 
     (* Draw player on top *)
-    let delta_time = get_frame_time () in
     let player = !game_state.GS.player in
     PR.draw_player player delta_time moving;
 
