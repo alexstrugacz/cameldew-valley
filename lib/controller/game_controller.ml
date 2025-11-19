@@ -39,9 +39,21 @@ let handle_actions (gs : GS.game_state) (actions : Input_handler.action list) :
     GS.game_state =
   List.fold_left take_action gs actions
 
-(* Create 12 crops. For now, all are strawberries. *)
+let () = Random.self_init ()
+
+let get_random_crop_type () =
+  let i = Random.int 5 in
+  match i with
+  | 0 -> Crop.Strawberry
+  | 1 -> Crop.Wheat
+  | 2 -> Crop.Tomato
+  | 3 -> Crop.Wheat
+  | 4 -> Crop.Tomato
+  | _ -> Crop.Strawberry
+
+(* Create 12 crops. *)
 let create_initial_crops (num_crops : int) : Crop.crop_instance list =
-  List.init 12 (fun i -> Crop.create_crop Crop.Strawberry)
+  List.init 12 (fun i -> Crop.create_crop (get_random_crop_type ()))
 
 let try_grow_crop (crop : Crop.crop_instance) : Crop.crop_instance =
   Crop.try_grow crop

@@ -29,7 +29,7 @@ let crop_database = function
       {
         kind = Wheat;
         growth_rate = 0.3;
-        max_stage = 3;
+        max_stage = 4;
         buy_price = 10;
         sell_price = 20;
       }
@@ -37,7 +37,7 @@ let crop_database = function
       {
         kind = Corn;
         growth_rate = 0.15;
-        max_stage = 5;
+        max_stage = 4;
         buy_price = 25;
         sell_price = 60;
       }
@@ -61,7 +61,7 @@ let crop_database = function
       {
         kind = Potato;
         growth_rate = 0.25;
-        max_stage = 3;
+        max_stage = 4;
         buy_price = 8;
         sell_price = 18;
       }
