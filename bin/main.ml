@@ -89,22 +89,23 @@ let () =
     We will need to draw them where the user planted them in the future. *)
 
     (* Row 1 *)
-    CR.draw_crop (List.nth !crops 0) 400.0 250.0;
-    CR.draw_crop (List.nth !crops 1) 500.0 250.0;
-    CR.draw_crop (List.nth !crops 2) 600.0 250.0;
-    CR.draw_crop (List.nth !crops 3) 700.0 250.0;
+    CR.draw_crop (List.nth !crops 0) 415.0 260.0;
+    CR.draw_crop (List.nth !crops 1) 555.0 260.0;
+    CR.draw_crop (List.nth !crops 2) 695.0 260.0;
+    CR.draw_crop (List.nth !crops 3) 835.0 260.0;
 
     (* Row 2 *)
-    CR.draw_crop (List.nth !crops 4) 400.0 350.0;
-    CR.draw_crop (List.nth !crops 5) 500.0 350.0;
-    CR.draw_crop (List.nth !crops 6) 600.0 350.0;
-    CR.draw_crop (List.nth !crops 7) 700.0 350.0;
+    CR.draw_crop (List.nth !crops 4) 415.0 370.0;
+    CR.draw_crop (List.nth !crops 5) 555.0 370.0;
+    CR.draw_crop (List.nth !crops 6) 695.0 370.0;
+    CR.draw_crop (List.nth !crops 7) 835.0 370.0;
 
     (* Row 3 *)
-    CR.draw_crop (List.nth !crops 8) 400.0 450.0;
-    CR.draw_crop (List.nth !crops 9) 500.0 450.0;
-    CR.draw_crop (List.nth !crops 10) 600.0 450.0;
-    CR.draw_crop (List.nth !crops 11) 700.0 450.0;
+    CR.draw_crop (List.nth !crops 8) 415.0 480.0;
+    CR.draw_crop (List.nth !crops 9) 555.0 480.0;
+    CR.draw_crop (List.nth !crops 10) 695.0 480.0;
+    CR.draw_crop (List.nth !crops 11) 835.0 480.0;
+
     end_drawing ()
   done;
 

@@ -42,4 +42,4 @@ let draw_crop (crop : Crop.crop_instance) (x : float) (y : float) =
   in
 
   (* Draw *)
-  draw_texture_ex texture (Vector2.create x y) 0.0 0.35 Color.white
+  draw_texture_ex texture (Vector2.create x y) 0.0 0.20 Color.white
