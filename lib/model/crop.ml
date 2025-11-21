@@ -4,10 +4,10 @@ type growth_stage = int (* 0 = just planted, max = harvestable *)
 
 type crop_kind =
   | Wheat
-  | Corn
   | Strawberry
   | Tomato
-  | Potato
+  | Grape
+  | Pumpkin
 
 type crop_stats = {
   kind : crop_kind;
@@ -33,14 +33,6 @@ let crop_database = function
         buy_price = 10;
         sell_price = 20;
       }
-  | Corn ->
-      {
-        kind = Corn;
-        growth_rate = 0.15;
-        max_stage = 4;
-        buy_price = 25;
-        sell_price = 60;
-      }
   | Strawberry ->
       {
         kind = Strawberry;
@@ -57,13 +49,21 @@ let crop_database = function
         buy_price = 15;
         sell_price = 35;
       }
-  | Potato ->
+  | Grape ->
       {
-        kind = Potato;
-        growth_rate = 0.25;
+        kind = Grape;
+        growth_rate = 0.15;
         max_stage = 4;
-        buy_price = 8;
-        sell_price = 18;
+        buy_price = 25;
+        sell_price = 60;
+      }
+  | Pumpkin ->
+      {
+        kind = Pumpkin;
+        growth_rate = 0.2;
+        max_stage = 4;
+        buy_price = 30;
+        sell_price = 90;
       }
 
 let next_id = ref 0

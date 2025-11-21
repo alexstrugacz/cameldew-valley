@@ -30,6 +30,16 @@ let load_assets () =
       { crop_texture = load_texture "assets/crops/wheat3.png" };
       { crop_texture = load_texture "assets/crops/wheat4.png" };
       { crop_texture = load_texture "assets/crops/wheat5.png" };
+      { crop_texture = load_texture "assets/crops/pumpkin1.png" };
+      { crop_texture = load_texture "assets/crops/pumpkin2.png" };
+      { crop_texture = load_texture "assets/crops/pumpkin3.png" };
+      { crop_texture = load_texture "assets/crops/pumpkin4.png" };
+      { crop_texture = load_texture "assets/crops/pumpkin5.png" };
+      { crop_texture = load_texture "assets/crops/grape1.png" };
+      { crop_texture = load_texture "assets/crops/grape2.png" };
+      { crop_texture = load_texture "assets/crops/grape3.png" };
+      { crop_texture = load_texture "assets/crops/grape4.png" };
+      { crop_texture = load_texture "assets/crops/grape5.png" };
     |]
 
 (* Unload textures *)
@@ -58,6 +68,16 @@ let draw_crop (crop : Crop.crop_instance) (x : float) (y : float) =
     | 2, Wheat -> frames.(12).crop_texture
     | 3, Wheat -> frames.(13).crop_texture
     | 4, Wheat -> frames.(14).crop_texture
+    | 0, Pumpkin -> frames.(15).crop_texture
+    | 1, Pumpkin -> frames.(16).crop_texture
+    | 2, Pumpkin -> frames.(17).crop_texture
+    | 3, Pumpkin -> frames.(18).crop_texture
+    | 4, Pumpkin -> frames.(19).crop_texture
+    | 0, Grape -> frames.(20).crop_texture
+    | 1, Grape -> frames.(21).crop_texture
+    | 2, Grape -> frames.(22).crop_texture
+    | 3, Grape -> frames.(23).crop_texture
+    | 4, Grape -> frames.(24).crop_texture
     | _, _ -> frames.(0).crop_texture
   in
 

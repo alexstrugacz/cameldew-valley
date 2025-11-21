@@ -47,8 +47,8 @@ let get_random_crop_type () =
   | 0 -> Crop.Strawberry
   | 1 -> Crop.Wheat
   | 2 -> Crop.Tomato
-  | 3 -> Crop.Wheat
-  | 4 -> Crop.Tomato
+  | 3 -> Crop.Grape
+  | 4 -> Crop.Pumpkin
   | _ -> Crop.Strawberry
 
 (* Create 12 crops. *)
