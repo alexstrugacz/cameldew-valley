@@ -2,6 +2,7 @@ module P = Model.Player
 module Crop = Model.Crop
 module PR = View.Player_render
 module CR = View.Crop_render
+module IR = View.Inventory_render
 module I = Controller.Input_handler
 module C = Controller.Game_controller
 module GS = Model.Game_state
@@ -22,8 +23,9 @@ let () =
   let start_time = get_time () in
 
   PR.load_assets ();
-
   CR.load_assets ();
+  IR.load_assets ();
+
   let board_width = 1200 in
   let board_height = 600 in
   let initial_player = P.create_player 100 100 0 in
@@ -106,6 +108,8 @@ let () =
     CR.draw_crop (List.nth !crops 10) 695.0 480.0;
     CR.draw_crop (List.nth !crops 11) 835.0 480.0;
 
+    IR.draw_inventory ();
+
     end_drawing ()
   done;
 
@@ -113,5 +117,6 @@ let () =
   (* CLEANUP *)
   PR.unload_assets ();
   CR.unload_assets ();
+  IR.unload_assets ();
   Array.iter unload_texture frames;
   close_window ()
