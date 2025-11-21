@@ -30,8 +30,8 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
       (* TODO: open / close shop *)
       gs
   | GS.Playing, Select_slot i ->
-      (* TODO: change selected inventory slot to i *)
-      gs
+      let new_player = { gs.GS.player with selected_slot = i } in
+      { gs with GS.player = new_player }
   | GS.Paused, _ | GS.NotPlaying, _ -> gs
 
 (* Apply a whole list of actions in sequence *)

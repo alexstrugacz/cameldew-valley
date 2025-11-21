@@ -108,7 +108,7 @@ let () =
     CR.draw_crop (List.nth !crops 10) 695.0 480.0;
     CR.draw_crop (List.nth !crops 11) 835.0 480.0;
 
-    IR.draw_inventory ();
+    IR.draw_inventory player;
 
     end_drawing ()
   done;
