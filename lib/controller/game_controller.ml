@@ -18,14 +18,41 @@ let move (gs : GS.game_state) (dir : P.direction) : GS.game_state =
     (string_of_int new_p.y);
   { gs with GS.player = new_p }
 
+(* TODO: Create function that interacts with shop *)
+let interact_with_shop gs = gs
+
+let interact_with_soil gs tile_x tile_y crop =
+  if Crop.is_harvestable crop then (
+    let player = gs.GS.player in
+    (* Game state after harvesting and selling. *)
+    let player_model_after_harvest =
+      let player' = P.harvest_and_sell player crop in
+      let player_opt'' = P.add_seeds player' crop.stats.kind 3 in
+      (* TODO: player model has kinda weird add_seeds func since it returns
+         player_opt, might want to change that *)
+      match player_opt'' with
+      | Some player -> player
+      | None -> player'
+    in
+    B.set_tile gs.GS.board tile_x tile_y (B.Soil None);
+    { gs with GS.player = player_model_after_harvest }
+    (* If the crop is not harvestable, do nothing. *))
+  else gs
+
 let take_action (gs : GS.game_state) (action : Input_handler.action) :
     GS.game_state =
   match (gs.GS.phase, action) with
   | _, Pause -> GS.toggle_pause gs
   | GS.Playing, Move dir -> move gs dir
-  | GS.Playing, Interact ->
-      (* TODO: interaction logic *)
-      gs
+  | GS.Playing, Interact -> (
+      let tile_x, tile_y, tile_opt =
+        B.get_facing_tile gs.GS.board gs.GS.player
+      in
+      match tile_opt with
+      | Some (B.Soil (Some crop)) -> interact_with_soil gs tile_x tile_y crop
+      | Some B.Shop -> interact_with_shop gs
+      | Some (B.Soil None) -> gs
+      | _ -> failwith "All Soil, can't be reached.")
   | GS.Playing, Toggle_Buy_Sell ->
       (* TODO: open / close shop *)
       gs
