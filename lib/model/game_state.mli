@@ -7,8 +7,8 @@ type phase =
 (** [game_state] stores game state data for the player, board, and the current phase they are in. *)
 type game_state = {
   phase : phase;
-  player : Model.Player.player;
-  initial_player : Model.Player.player;
+  player : Player.player;
+  initial_player : Player.player;
   board_width : int;
   board_height : int;
 }
