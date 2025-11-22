@@ -1,4 +1,5 @@
 module P = Player
+module B = Board
 
 type phase =
   | Playing
@@ -11,6 +12,7 @@ type game_state = {
   initial_player : P.player;
   board_width : int;
   board_height : int;
+  board : B.board;
 }
 
 let init board_width board_height player =
@@ -20,6 +22,7 @@ let init board_width board_height player =
     initial_player = player;
     board_width;
     board_height;
+    board = B.create_board board_width board_height;
   }
 
 let start game_state =

@@ -11,6 +11,7 @@ type game_state = {
   initial_player : Player.player;
   board_width : int;
   board_height : int;
+  board : Board.board;
 }
 
 (** [init w h p game_state] initializes the game's state [game_state] with  width [w], height [h], and player [p]. *)

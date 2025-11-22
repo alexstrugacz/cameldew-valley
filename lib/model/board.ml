@@ -7,12 +7,11 @@ type tile =
 
 type board = tile array array
 
+(* TODO: for now making everything soil, change later to use Path, Shop *)
+
 (** [create_board width height] creates a new game board *)
 let create_board width height =
-  Array.init height (fun y ->
-      Array.init width (fun x ->
-          (* Todo *)
-          ()))
+  Array.init height (fun y -> Array.init width (fun x -> Soil None))
 
 (** [get_tile board x y] gets tile at position (x, y)*)
 let get_tile board x y =
