@@ -44,24 +44,25 @@ let move_player player dir board_width board_height =
   in
   { player with x = new_x; y = new_y; facing = dir }
 
-(** [add_seeds player kind count] adds seeds to player's inventory *)
+(** Map the correct crop kind to its fixed inventory slot *)
+let slot_for_crop (kind : Crop.crop_kind) : int =
+  match kind with
+  | Wheat -> 0
+  | Strawberry -> 1
+  | Grape -> 2
+  | Tomato -> 3
+  | Pumpkin -> 4
+
+(** [add_seeds player kind count] adds seeds to the fixed slot for that crop! *)
 let add_seeds player kind count =
-  (* Try to find existing slot with this seed type *)
-  let rec find_slot idx =
-    if idx >= Array.length player.inventory then None
-    else
-      let slot = player.inventory.(idx) in
-      match slot.seed_type with
-      | Some k when k = kind -> Some idx
-      | None -> Some idx (* Empty slot *)
-      | _ -> find_slot (idx + 1)
-  in
-  match find_slot 0 with
-  | None -> None (* Inventory full *)
-  | Some idx ->
-      player.inventory.(idx) <-
-        { seed_type = Some kind; count = player.inventory.(idx).count + count };
-      Some player
+  let slot_idx = slot_for_crop kind in
+  let slot = player.inventory.(slot_idx) in
+
+  (* Update slot *)
+  player.inventory.(slot_idx) <-
+    { seed_type = Some kind; count = slot.count + count };
+
+  Some player
 
 (** [remove_seed player slot_idx] removes one seed from the given slot;
     primarily for planting*)
