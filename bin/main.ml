@@ -3,6 +3,7 @@ module Crop = Model.Crop
 module PR = View.Player_render
 module CR = View.Crop_render
 module IR = View.Inventory_render
+module CO = View.Coin_render
 module I = Controller.Input_handler
 module C = Controller.Game_controller
 module GS = Model.Game_state
@@ -25,6 +26,7 @@ let () =
   PR.load_assets ();
   CR.load_assets ();
   IR.load_assets ();
+  CO.load ();
 
   let board_width = 1200 in
   let board_height = 600 in
@@ -121,6 +123,7 @@ let () =
     if layer = 4 then PR.draw_player player delta_time moving else ();
 
     IR.draw_inventory player;
+    CO.draw_coin player;
 
     end_drawing ()
   done;
@@ -130,5 +133,6 @@ let () =
   PR.unload_assets ();
   CR.unload_assets ();
   IR.unload_assets ();
+  CO.unload ();
   Array.iter unload_texture frames;
   close_window ()

@@ -11,7 +11,7 @@ let crop_kinds =
     (Crop.Grape, "assets/crops/grape");
   |]
 
-(* textures.(kind_index).(stage) -> Texture.t *)
+(* texture table*)
 let textures : Texture.t array array ref = ref [||]
 
 let load_assets () =
@@ -25,7 +25,6 @@ let load_assets () =
 
 let unload_assets () = Array.iter (Array.iter unload_texture) !textures
 
-(* Helper: get index of crop kind *)
 let kind_index kind =
   let rec find i =
     if i >= Array.length crop_kinds then 0
@@ -35,7 +34,7 @@ let kind_index kind =
   in
   find 0
 
-(* Draw crop *)
+(* Draws the crop *)
 let draw_crop (crop : Crop.crop_instance) (x : float) (y : float) =
   let kind_i = kind_index crop.stats.kind in
   let stage = min 4 (max 0 crop.current_stage) in
