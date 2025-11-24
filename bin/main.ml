@@ -4,6 +4,7 @@ module PR = View.Player_render
 module CR = View.Crop_render
 module IR = View.Inventory_render
 module CO = View.Coin_render
+module CL = View.Clock_render
 module I = Controller.Input_handler
 module C = Controller.Game_controller
 module GS = Model.Game_state
@@ -27,6 +28,7 @@ let () =
   CR.load_assets ();
   IR.load_assets ();
   CO.load ();
+  CL.load ();
 
   let board_width = 1200 in
   let board_height = 600 in
@@ -124,6 +126,7 @@ let () =
 
     IR.draw_inventory player;
     CO.draw_coin player;
+    CL.draw_clock ();
 
     end_drawing ()
   done;
@@ -134,5 +137,6 @@ let () =
   CR.unload_assets ();
   IR.unload_assets ();
   CO.unload ();
+  CL.unload ();
   Array.iter unload_texture frames;
   close_window ()

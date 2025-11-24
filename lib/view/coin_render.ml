@@ -2,7 +2,7 @@ module P = Model.Player
 open Raylib
 
 let coin_texture = ref None
-let scale = 0.25
+let scale = 0.23
 let font = ref None
 
 let load () =
@@ -30,7 +30,7 @@ let draw_coin (player : P.player) =
       draw_texture_ex tex pos 0.0 scale Color.white;
 
       let coin_str = string_of_int player.coins in
-      let font_size = 25.0 in
+      let font_size = 21.0 in
       let spacing = 1.0 in
 
       (* Dimensions of the coin display box *)
@@ -44,8 +44,8 @@ let draw_coin (player : P.player) =
           let text_h = Vector2.y text_size in
 
           (* Center inside the box *)
-          let centered_x = float_of_int 955 +. ((box_width -. text_w) /. 2.0) in
-          let centered_y = float_of_int 47 +. ((box_height -. text_h) /. 2.0) in
+          let centered_x = float_of_int 947 +. ((box_width -. text_w) /. 2.0) in
+          let centered_y = float_of_int 44 +. ((box_height -. text_h) /. 2.0) in
 
           draw_text_ex f coin_str
             (Vector2.create (centered_x +. 3.0) (centered_y +. 3.0))
