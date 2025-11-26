@@ -13,6 +13,7 @@ type game_state = {
   board_width : int;
   board_height : int;
   board : B.board;
+  elapsed_time : float;
 }
 
 let init board_width board_height player =
@@ -23,13 +24,14 @@ let init board_width board_height player =
     board_width;
     board_height;
     board = B.create_board board_width board_height;
+    elapsed_time = 0.0;
   }
 
 let start game_state =
   match game_state.phase with
   | Playing -> game_state
   | NotPlaying ->
-      { game_state with phase = Playing; player = game_state.initial_player }
+      { game_state with phase = Playing; player = game_state.initial_player; elapsed_time = 0.0 }
   | Paused -> { game_state with phase = Playing }
 
 let stop game_state =

@@ -39,15 +39,18 @@ let () =
   let crops = ref (C.create_initial_crops 12) in
   let crop_grow_interval = 5.0 in
   let last_crop_grow_time = ref 0.0 in
-  let game_time = ref 0.0 in
 
   while not (window_should_close ()) do
     let elapsed = get_time () -. start_time in
     let delta_time = get_frame_time () in
 
-    (* Advance “in-game” time only while playing *)
+    (* Advance "in-game" time only while playing *)
     if !game_state.GS.phase = GS.Playing then
-      game_time := !game_time +. delta_time;
+      game_state :=
+        {
+          !game_state with
+          GS.elapsed_time = !game_state.GS.elapsed_time +. delta_time;
+        };
 
     (* ------------------------- *)
     (* GAME LOGIC: PLAYER INPUTS *)
@@ -58,10 +61,10 @@ let () =
     (* GAME LOGIC: CROP GROWTH (every 5s) *)
     if
       !game_state.GS.phase = GS.Playing
-      && !game_time -. !last_crop_grow_time >= crop_grow_interval
+      && !game_state.GS.elapsed_time -. !last_crop_grow_time >= crop_grow_interval
     then (
       crops := C.try_grow_all_crops !crops;
-      last_crop_grow_time := !game_time);
+      last_crop_grow_time := !game_state.GS.elapsed_time);
 
     (* Determine if the player is moving *)
     let moving =
@@ -126,7 +129,7 @@ let () =
 
     IR.draw_inventory player;
     CO.draw_coin player;
-    CL.draw_clock ();
+    CL.draw_clock !game_state.GS.elapsed_time;
 
     end_drawing ()
   done;
