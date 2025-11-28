@@ -5,6 +5,7 @@ module CR = View.Crop_render
 module IR = View.Inventory_render
 module CO = View.Coin_render
 module CL = View.Clock_render
+module SR = View.Shop_render
 module I = Controller.Input_handler
 module C = Controller.Game_controller
 module GS = Model.Game_state
@@ -29,6 +30,7 @@ let () =
   IR.load_assets ();
   CO.load ();
   CL.load ();
+  SR.load_assets ();
 
   let board_width = 1200 in
   let board_height = 600 in
@@ -131,6 +133,9 @@ let () =
     CO.draw_coin player;
     CL.draw_clock !game_state.GS.elapsed_time;
 
+    (* Draw shop if open *)
+    if !game_state.GS.shop_open then SR.draw_shop ();
+
     end_drawing ()
   done;
 
@@ -141,5 +146,6 @@ let () =
   IR.unload_assets ();
   CO.unload ();
   CL.unload ();
+  SR.unload_assets ();
   Array.iter unload_texture frames;
   close_window ()

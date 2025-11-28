@@ -18,8 +18,23 @@ let move (gs : GS.game_state) (dir : P.direction) : GS.game_state =
     (string_of_int new_p.y);
   { gs with GS.player = new_p }
 
-(* TODO: Create function that interacts with shop *)
-let interact_with_shop gs = gs
+(** [interact_with_shop gs] toggles the shop open/closed and pauses/unpauses the
+    game accordingly *)
+let interact_with_shop gs =
+  let new_shop_open = not gs.GS.shop_open in
+  let new_phase =
+    if new_shop_open then
+      (* Opening shop: pause if currently playing *)
+      match gs.GS.phase with
+      | GS.Playing -> GS.Paused
+      | _ -> gs.GS.phase
+    else
+      (* Closing shop: resume if paused *)
+      match gs.GS.phase with
+      | GS.Paused -> GS.Playing
+      | _ -> gs.GS.phase
+  in
+  { gs with GS.shop_open = new_shop_open; GS.phase = new_phase }
 
 let interact_with_soil gs tile_x tile_y crop =
   if Crop.is_harvestable crop then (
@@ -45,17 +60,21 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
   | _, Pause -> GS.toggle_pause gs
   | GS.Playing, Move dir -> move gs dir
   | GS.Playing, Interact -> (
-      let tile_x, tile_y, tile_opt =
+      (* Check both the tile the player is standing on and the tile they're facing *)
+      let player_tile_opt =
+        B.get_tile gs.GS.board gs.GS.player.P.x gs.GS.player.P.y
+      in
+      let tile_x, tile_y, facing_tile_opt =
         B.get_facing_tile gs.GS.board gs.GS.player
       in
-      match tile_opt with
-      | Some (B.Soil (Some crop)) -> interact_with_soil gs tile_x tile_y crop
-      | Some B.Shop -> interact_with_shop gs
-      | Some (B.Soil None) -> gs
-      | _ -> failwith "All Soil, can't be reached.")
-  | GS.Playing, Toggle_Buy_Sell ->
-      (* TODO: open / close shop *)
-      gs
+      match (player_tile_opt, facing_tile_opt) with
+      | Some B.Shop, _ -> interact_with_shop gs
+      | _, Some B.Shop -> interact_with_shop gs
+      | _, Some (B.Soil (Some crop)) -> interact_with_soil gs tile_x tile_y crop
+      | _, _ -> gs)
+  | GS.Paused, Interact -> (
+      (* When paused and shop open, allow closing shop by pressing F *)
+      interact_with_shop gs)
   | GS.Playing, Select_slot i ->
       let new_player = { gs.GS.player with selected_slot = i } in
       { gs with GS.player = new_player }

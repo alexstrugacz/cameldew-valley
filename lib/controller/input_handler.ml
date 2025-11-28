@@ -3,7 +3,6 @@ module P = Model.Player
 type action =
   | Move of P.direction
   | Interact
-  | Toggle_Buy_Sell
   | Select_slot of int
   | Pause
 
@@ -26,7 +25,6 @@ let check_input () =
 
   (* Other actions can stay as is, since you might not want them repeating *)
   if is_key_pressed Key.F then inputs := Interact :: !inputs;
-  if is_key_pressed Key.Left_shift then inputs := Toggle_Buy_Sell :: !inputs;
 
   if is_key_pressed Key.One then inputs := Select_slot 0 :: !inputs;
   if is_key_pressed Key.Two then inputs := Select_slot 1 :: !inputs;
@@ -44,7 +42,6 @@ let pp_actions_from_inputs = function
   | Move P.South -> "Move South"
   | Move P.East -> "Move East"
   | Interact -> "Interact"
-  | Toggle_Buy_Sell -> "Toggle Buy/Sell"
   | Select_slot slot -> Printf.sprintf "Select Slot %d" (slot + 1)
   | Pause -> "Pause"
 

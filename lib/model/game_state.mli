@@ -13,6 +13,7 @@ type game_state = {
   board_height : int;
   board : Board.board;
   elapsed_time : float;
+  shop_open : bool;
 }
 
 (** [init w h p game_state] initializes the game's state [game_state] with  width [w], height [h], and player [p]. *)

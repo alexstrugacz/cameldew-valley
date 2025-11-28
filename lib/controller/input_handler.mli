@@ -1,7 +1,6 @@
 type action =
   | Move of Model.Player.direction
   | Interact
-  | Toggle_Buy_Sell
   | Select_slot of int
   | Pause
 
