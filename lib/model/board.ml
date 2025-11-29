@@ -11,7 +11,7 @@ type board = tile array array
 let create_board width height =
   Array.init height (fun y ->
       Array.init width (fun x ->
-          if 520 < x && x < 700 && 0 < y && y < 80 then Shop else Soil None))
+          if 455 < x && x < 780 && -5 < y && y < 80 then Shop else Soil None))
 
 (** [get_tile board x y] gets tile at position (x, y)*)
 let get_tile board x y =

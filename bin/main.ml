@@ -63,7 +63,8 @@ let () =
     (* GAME LOGIC: CROP GROWTH (every 5s) *)
     if
       !game_state.GS.phase = GS.Playing
-      && !game_state.GS.elapsed_time -. !last_crop_grow_time >= crop_grow_interval
+      && !game_state.GS.elapsed_time -. !last_crop_grow_time
+         >= crop_grow_interval
     then (
       crops := C.try_grow_all_crops !crops;
       last_crop_grow_time := !game_state.GS.elapsed_time);

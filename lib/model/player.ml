@@ -32,6 +32,19 @@ let create_player x y starting_coins =
     selected_slot = 0;
   }
 
+(** [forbidden] represents locations the user can't traverse *)
+let forbidden =
+  [
+    (* SHOP AREA*) (460, 0, 765, 55); (* CORNER TREE AREA *) (1095, 0, 1280, 70);
+  ]
+(* x1, y1, x2, y2 *)
+
+(** [is_blocked (x, y)] returns whether this coordinate is blocked for the user*)
+let is_blocked (x, y) =
+  List.exists
+    (fun (x1, y1, x2, y2) -> x >= x1 && x <= x2 && y >= y1 && y <= y2)
+    forbidden
+
 (** [move_player player dir board_width board_height] moves player in the
     selected direction *)
 let move_player player dir board_width board_height =
@@ -42,7 +55,8 @@ let move_player player dir board_width board_height =
     | West -> (max 0 (player.x - 4), player.y)
     | East -> (min (board_width - 1) (player.x + 4), player.y)
   in
-  { player with x = new_x; y = new_y; facing = dir }
+  if is_blocked (new_x, new_y) then { player with facing = dir }
+  else { player with x = new_x; y = new_y; facing = dir }
 
 (** Map the correct crop kind to its fixed inventory slot *)
 let slot_for_crop (kind : Crop.crop_kind) : int =
