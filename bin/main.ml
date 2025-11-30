@@ -25,6 +25,7 @@ let () =
   let durations = [| 3.0; 0.5 |] in
   let start_time = get_time () in
 
+  (* Load assets *)
   PR.load_assets ();
   CR.load_assets ();
   IR.load_assets ();
@@ -46,7 +47,8 @@ let () =
     let elapsed = get_time () -. start_time in
     let delta_time = get_frame_time () in
 
-    (* Advance "in-game" time only while playing *)
+    (* ------------------------- *)
+    (* GAME LOGIC *)
     if !game_state.GS.phase = GS.Playing then
       game_state :=
         {
@@ -54,13 +56,11 @@ let () =
           GS.elapsed_time = !game_state.GS.elapsed_time +. delta_time;
         };
 
-    (* ------------------------- *)
-    (* GAME LOGIC: PLAYER INPUTS *)
     let actions = I.check_input () in
     I.print_inputs actions;
     game_state := C.handle_actions !game_state actions;
 
-    (* GAME LOGIC: CROP GROWTH (every 5s) *)
+    (* Crop growth *)
     if
       !game_state.GS.phase = GS.Playing
       && !game_state.GS.elapsed_time -. !last_crop_grow_time
@@ -69,7 +69,7 @@ let () =
       crops := C.try_grow_all_crops !crops;
       last_crop_grow_time := !game_state.GS.elapsed_time);
 
-    (* Determine if the player is moving *)
+    (* Player movement check *)
     let moving =
       List.exists
         (function
@@ -78,8 +78,7 @@ let () =
         actions
     in
 
-    (* ------------------------- *)
-    (* BACKGROUND ANIMATION *)
+    (* Background animation *)
     let cycle_time = durations.(0) +. durations.(1) in
     let t = mod_float elapsed cycle_time in
     let frame_index = if t < durations.(0) then 0 else 1 in
@@ -89,53 +88,48 @@ let () =
     begin_drawing ();
     clear_background Color.raywhite;
 
-    (* Draw background first *)
+    (* Background *)
     draw_texture frames.(frame_index) 0 0 Color.white;
 
-    (* Draw player on top *)
+    (* Player layer logic *)
     let player = !game_state.GS.player in
     let layer =
       match player.y with
       | x when x < 200 -> 1
       | x when x < 310 -> 2
       | x when x < 420 -> 3
-      | x -> 4
+      | _ -> 4
     in
 
-    (* Draw crops on top *)
-    (* TODO: currently, the crops have hardcoded draw locations. 
-    We will need to draw them where the user planted them in the future. *)
-    if layer = 1 then PR.draw_player player delta_time moving else ();
-    (* Row 1 *)
+    (* Draw crops and player based on layers *)
+    if layer = 1 then PR.draw_player player delta_time moving;
     CR.draw_crop (List.nth !crops 0) 415.0 260.0;
     CR.draw_crop (List.nth !crops 1) 555.0 260.0;
     CR.draw_crop (List.nth !crops 2) 695.0 260.0;
     CR.draw_crop (List.nth !crops 3) 835.0 260.0;
 
-    if layer = 2 then PR.draw_player player delta_time moving else ();
-
-    (* Row 2 *)
+    if layer = 2 then PR.draw_player player delta_time moving;
     CR.draw_crop (List.nth !crops 4) 415.0 370.0;
     CR.draw_crop (List.nth !crops 5) 555.0 370.0;
     CR.draw_crop (List.nth !crops 6) 695.0 370.0;
     CR.draw_crop (List.nth !crops 7) 835.0 370.0;
 
-    if layer = 3 then PR.draw_player player delta_time moving else ();
-
-    (* Row 3 *)
+    if layer = 3 then PR.draw_player player delta_time moving;
     CR.draw_crop (List.nth !crops 8) 415.0 480.0;
     CR.draw_crop (List.nth !crops 9) 555.0 480.0;
     CR.draw_crop (List.nth !crops 10) 695.0 480.0;
     CR.draw_crop (List.nth !crops 11) 835.0 480.0;
 
-    if layer = 4 then PR.draw_player player delta_time moving else ();
+    if layer = 4 then PR.draw_player player delta_time moving;
 
+    (* Draw UI elements *)
     IR.draw_inventory player;
     CO.draw_coin player;
     CL.draw_clock !game_state.GS.elapsed_time;
 
-    (* Draw shop if open *)
-    if !game_state.GS.shop_open then SR.draw_shop ();
+    (* ------------------------- *)
+    (* Draw Shop if open *)
+    SR.draw_shop !game_state.GS.shop_open;
 
     end_drawing ()
   done;
