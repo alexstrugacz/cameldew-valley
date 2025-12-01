@@ -13,9 +13,9 @@ let test_create_crop_init _ =
 let harvest_only_when_max _ =
   let c = Crop.create_crop Crop.Strawberry in
   let max_stage = c.stats.max_stage in
-  let c_not_hardestable = { c with current_stage = max_stage - 1 } in
+  let c_not_harvestable = { c with current_stage = max_stage - 1 } in
   assert_bool "should not be harvestable b/c not fully grown"
-    (not (Crop.is_harvestable c_not_hardestable));
+    (not (Crop.is_harvestable c_not_harvestable));
   let c_max = { c with current_stage = max_stage } in
   assert_bool "should be harvestable (fully grown)" (Crop.is_harvestable c_max)
 

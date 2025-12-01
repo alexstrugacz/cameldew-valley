@@ -20,3 +20,9 @@
  (modules test_game_state)
  (libraries ounit2 model)
 )
+
+(test
+ (name test_board)
+ (modules test_board)
+ (libraries ounit2 model)
+)
