@@ -32,3 +32,9 @@
  (modules test_game_controller)
  (libraries ounit2 model controller)
 )
+
+(test
+ (name test_input_handler)
+ (modules test_input_handler)
+ (libraries ounit2 model controller)
+)

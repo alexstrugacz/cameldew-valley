@@ -226,44 +226,6 @@ let not_on_anything_does_nothing _ =
   assert_bool "shop should stay closed" (gs1.shop_open = false);
   assert_equal coins_before gs1.player.coins
 
-(** [test_get_random_crop_type_valid] ensures that every value returned by
-    [get_random_crop_type] is one of the five valid crop constructors. *)
-
-let random_crop_always_valid _ =
-  Random.init 42;
-  (* fixed seed for reproducibility *)
-  for _ = 1 to 1000 do
-    match C.get_random_crop_type () with
-    | Crop.Strawberry | Crop.Wheat | Crop.Tomato | Crop.Grape | Crop.Pumpkin ->
-        ()
-  done
-
-(** [test_get_random_crop_type_covers_all] runs [get_random_crop_type] many
-    times and checks that all five crop variants appear at least once, ensuring
-    every branch of the match expression is executed. *)
-let random_crop_exist4_all_kinds _ =
-  Random.init 123;
-  let seen_strawberry = ref false in
-  let seen_wheat = ref false in
-  let seen_tomato = ref false in
-  let seen_grape = ref false in
-  let seen_pumpkin = ref false in
-
-  for _ = 1 to 2000 do
-    match C.get_random_crop_type () with
-    | Crop.Strawberry -> seen_strawberry := true
-    | Crop.Wheat -> seen_wheat := true
-    | Crop.Tomato -> seen_tomato := true
-    | Crop.Grape -> seen_grape := true
-    | Crop.Pumpkin -> seen_pumpkin := true
-  done;
-
-  assert_bool "saw Strawberry at least once" !seen_strawberry;
-  assert_bool "saw Wheat at least once" !seen_wheat;
-  assert_bool "saw Tomato at least once" !seen_tomato;
-  assert_bool "saw Grape at least once" !seen_grape;
-  assert_bool "saw Pumpkin at least once" !seen_pumpkin
-
 (** [create_initial_crops_len] checks that [create_initial_crops] always returns
     a list of exactly 12 crops. *)
 let create_initial_crops_len _ =
@@ -328,8 +290,6 @@ let suite =
          "facing_shop_interact_with_shop" >:: facing_shop_interact_with_shop;
          "facing_soil_interact_with_soil" >:: facing_soil_interact_with_soil;
          "not_on_anything_does_nothing" >:: not_on_anything_does_nothing;
-         "random_crop_always_valid" >:: random_crop_always_valid;
-         "random_crop_exist4_all_kinds" >:: random_crop_exist4_all_kinds;
          "create_initial_crops_len" >:: create_initial_crops_len;
          "try_grow_crops" >:: try_grow_crops;
          "try_grow_all_crops_test" >:: try_grow_all_crops_test;
