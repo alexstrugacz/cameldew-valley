@@ -14,6 +14,7 @@ let move (gs : GS.game_state) (dir : P.direction) : GS.game_state =
   let new_p =
     P.move_player gs.GS.player dir gs.GS.board_width gs.GS.board_height
   in
+  (* TODO: remove debugging output before submitting *)
   Printf.printf "The player's location is: (%s, %s) " (string_of_int new_p.x)
     (string_of_int new_p.y);
   { gs with GS.player = new_p }
@@ -49,7 +50,16 @@ let interact_with_soil gs tile_x tile_y crop =
           | Some player -> player
           | None -> player'
         in
-        B.set_tile gs.GS.board tile_x tile_y (B.Soil None);
+        let nearest_soil_point = B.get_nearest_soil_point tile_x tile_y in
+        let check_if_nearest_point_exists np =
+          match np with
+          | Some (x, y) -> (x, y)
+          | None -> (0, 0)
+        in
+        B.set_tile gs.GS.board
+          (fst (check_if_nearest_point_exists nearest_soil_point))
+          (snd (check_if_nearest_point_exists nearest_soil_point))
+          (B.Soil None);
         { gs with GS.player = player_model_after_harvest }
         (* If the crop is not harvestable, do nothing. *))
       else gs
@@ -58,9 +68,26 @@ let interact_with_soil gs tile_x tile_y crop =
       match player' with
       | Some (player', crop_kind_planted) ->
           let new_crop = Crop.create_crop crop_kind_planted in
-          B.set_tile gs.GS.board tile_x tile_y (Soil (Some new_crop));
-          gs
+          let nearest_soil_point = B.get_nearest_soil_point tile_x tile_y in
+          let check_if_nearest_point_exists np =
+            match np with
+            | Some (x, y) -> (x, y)
+            | None -> (0, 0)
+          in
+          B.set_tile gs.GS.board
+            (fst (check_if_nearest_point_exists nearest_soil_point))
+            (snd (check_if_nearest_point_exists nearest_soil_point))
+            (B.Soil (Some new_crop));
+          { gs with GS.player = player' }
       | None -> gs)
+
+let select_slot_index_crop_type = function
+  | 0 -> Crop.Wheat
+  | 1 -> Crop.Strawberry
+  | 2 -> Crop.Grape
+  | 3 -> Crop.Tomato
+  | 4 -> Crop.Pumpkin
+  | _ -> Crop.Wheat
 
 let take_action (gs : GS.game_state) (action : Input_handler.action) :
     GS.game_state =
@@ -89,6 +116,19 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
   | GS.Playing, Select_slot i ->
       let new_player = { gs.GS.player with selected_slot = i } in
       { gs with GS.player = new_player }
+  | GS.Paused, Select_slot i ->
+      (* potentially move this into a helper named buy_from_shop *)
+      if gs.GS.shop_open then
+        let check_if_player_exists p =
+          match p with
+          | Some p -> p
+          | None -> gs.GS.player
+        in
+        let seed_kind_selected = select_slot_index_crop_type i in
+        let new_player = P.add_seeds gs.GS.player seed_kind_selected 3 in
+        let new_player' = check_if_player_exists new_player in
+        { gs with GS.player = new_player' }
+      else gs
   | GS.Paused, _ | GS.NotPlaying, _ -> gs
 
 (* Apply a whole list of actions in sequence *)

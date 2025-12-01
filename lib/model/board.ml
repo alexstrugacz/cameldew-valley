@@ -34,6 +34,24 @@ let is_soil x y =
       abs (x - x') <= soil_side_length && abs (y - y') <= soil_side_length)
     soil_points
 
+let get_nearest_soil_point x y =
+  let nearest_distance_squared = ref 1280 in
+  let nearest_point = ref None in
+  List.iter
+    (fun (x', y') ->
+      let x_dist = x - x' in
+      let y_dist = y - y' in
+      let distance_squared = (x_dist * x_dist) + (y_dist * y_dist) in
+      let soil_side_length_squared = soil_side_length * soil_side_length in
+      if
+        distance_squared <= soil_side_length_squared
+        && distance_squared <= !nearest_distance_squared
+      then (
+        nearest_point := Some (x', y');
+        nearest_distance_squared := distance_squared))
+    soil_points;
+  !nearest_point
+
 (** [create_board width height] creates a new game board *)
 let create_board width height =
   Array.init height (fun y ->

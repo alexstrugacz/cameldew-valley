@@ -28,3 +28,7 @@ val get_facing_tile : board -> Player.player -> int * int * tile option
 (** [board_iterate f board] applies the function [f] on every tile on the
     [board]. *)
 val board_iterate : (int -> int -> tile -> unit) -> board -> unit
+
+(** [get_nearest_soil_point x y] gets the nearest soil point to the point ([x], [y]) 
+with a max distance of 30 pixels away. Helpful for determining where to plant crops! *)
+val get_nearest_soil_point : int -> int -> (int * int) option
