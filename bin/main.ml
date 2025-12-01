@@ -1,5 +1,6 @@
 module P = Model.Player
 module Crop = Model.Crop
+module B = Model.Board
 module PR = View.Player_render
 module CR = View.Crop_render
 module IR = View.Inventory_render
@@ -40,8 +41,9 @@ let () =
     ref (GS.init board_width board_height initial_player |> GS.start)
   in
   (* COMMENT OUT OLD HARD-CODED CROP GROWTH CODE  *)
-  (* let crops = ref (C.create_initial_crops 12) in let crop_grow_interval = 5.0
-     in let last_crop_grow_time = ref 0.0 in *)
+  (* let crops = ref (C.create_initial_crops 12) in  *)
+  let crop_grow_interval = 5.0 in
+  let last_crop_grow_time = ref 0.0 in
 
   while not (window_should_close ()) do
     let elapsed = get_time () -. start_time in
@@ -69,6 +71,24 @@ let () =
     then (
       crops := C.try_grow_all_crops !crops;
       last_crop_grow_time := !game_state.GS.elapsed_time); *)
+
+    (* New code iterates through board and grows all soil blocks every
+       crop_grow_interval (same timing as before, but now integrated with
+       board)*)
+    if
+      !game_state.GS.phase = GS.Playing
+      && !game_state.GS.elapsed_time -. !last_crop_grow_time
+         >= crop_grow_interval
+    then (
+      let board = !game_state.GS.board in
+      B.board_iterate
+        (fun x y tile ->
+          match tile with
+          | B.Soil (Some crop) ->
+              board.(y).(x) <- B.Soil (Some (Crop.try_grow crop))
+          | _ -> ())
+        board;
+      last_crop_grow_time := !game_state.GS.elapsed_time);
 
     (* Player movement check *)
     let moving =
@@ -114,9 +134,18 @@ let () =
        if layer = 3 then PR.draw_player player delta_time moving; CR.draw_crop
        (List.nth !crops 8) 415.0 480.0; CR.draw_crop (List.nth !crops 9) 555.0
        480.0; CR.draw_crop (List.nth !crops 10) 695.0 480.0; CR.draw_crop
-       (List.nth !crops 11) 835.0 480.0;
+       (List.nth !crops 11) 835.0 480.0; if layer = 4 then *)
 
-       if layer = 4 then *)
+    (* NEW CROP RENDER CODE *)
+    let board = !game_state.GS.board in
+    B.board_iterate
+      (fun x y tile ->
+        match tile with
+        | B.Soil (Some crop) ->
+            CR.draw_crop crop (float_of_int x) (float_of_int y)
+        | _ -> ())
+      board;
+
     PR.draw_player player delta_time moving;
 
     (* Draw UI elements *)

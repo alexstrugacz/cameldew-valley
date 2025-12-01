@@ -24,3 +24,7 @@ val set_tile : board -> int -> int -> tile -> unit
     [(x, y)] is the position of the tile the player is facing, and [tile_opt]
     is [Some tile] if that position is valid, or [None] if out of bounds. *)
 val get_facing_tile : board -> Player.player -> int * int * tile option
+
+(** [board_iterate f board] applies the function [f] on every tile on the
+    [board]. *)
+val board_iterate : (int -> int -> tile -> unit) -> board -> unit

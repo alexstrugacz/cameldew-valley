@@ -63,3 +63,12 @@ let get_facing_tile board player =
     | Player.East -> (player.x + 1, player.y)
   in
   (x, y, get_tile board x y)
+
+(** [board_iterate f board] applies the function [f] on every tile on the
+    [board]. *)
+let board_iterate f (board : board) =
+  for y = 0 to Array.length board - 1 do
+    for x = 0 to Array.length board.(0) - 1 do
+      f x y board.(y).(x)
+    done
+  done
