@@ -37,22 +37,30 @@ let interact_with_shop gs =
   { gs with GS.shop_open = new_shop_open; GS.phase = new_phase }
 
 let interact_with_soil gs tile_x tile_y crop =
-  if Crop.is_harvestable crop then (
-    let player = gs.GS.player in
-    (* Game state after harvesting and selling. *)
-    let player_model_after_harvest =
-      let player' = P.harvest_and_sell player crop in
-      let player_opt'' = P.add_seeds player' crop.stats.kind 3 in
-      (* TODO: player model has kinda weird add_seeds func since it returns
-         player_opt, might want to change that *)
-      match player_opt'' with
-      | Some player -> player
-      | None -> player'
-    in
-    B.set_tile gs.GS.board tile_x tile_y (B.Soil None);
-    { gs with GS.player = player_model_after_harvest }
-    (* If the crop is not harvestable, do nothing. *))
-  else gs
+  match crop with
+  | Some crop ->
+      if Crop.is_harvestable crop then (
+        let player = gs.GS.player in
+        (* Game state after harvesting and selling. *)
+        let player_model_after_harvest =
+          let player' = P.harvest_and_sell player crop in
+          let player_opt'' = P.add_seeds player' crop.stats.kind 3 in
+          match player_opt'' with
+          | Some player -> player
+          | None -> player'
+        in
+        B.set_tile gs.GS.board tile_x tile_y (B.Soil None);
+        { gs with GS.player = player_model_after_harvest }
+        (* If the crop is not harvestable, do nothing. *))
+      else gs
+  | None -> (
+      let player' = P.remove_seed gs.GS.player gs.GS.player.selected_slot in
+      match player' with
+      | Some (player', crop_kind_planted) ->
+          let new_crop = Crop.create_crop crop_kind_planted in
+          B.set_tile gs.GS.board tile_x tile_y (Soil (Some new_crop));
+          gs
+      | None -> gs)
 
 let take_action (gs : GS.game_state) (action : Input_handler.action) :
     GS.game_state =
@@ -71,7 +79,9 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
       match (player_tile_opt, facing_tile_opt) with
       | Some B.Shop, _ -> interact_with_shop gs
       | _, Some B.Shop -> interact_with_shop gs
-      | _, Some (B.Soil (Some crop)) -> interact_with_soil gs tile_x tile_y crop
+      | _, Some (B.Soil (Some crop)) ->
+          interact_with_soil gs tile_x tile_y (Some crop)
+      | _, Some (B.Soil None) -> interact_with_soil gs tile_x tile_y None
       | _, _ -> gs)
   | GS.Paused, Interact ->
       (* When paused and shop open, allow closing shop by pressing F *)

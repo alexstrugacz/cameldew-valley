@@ -36,7 +36,7 @@ let () =
 
   let board_width = 1200 in
   let board_height = 600 in
-  let initial_player = P.create_player 100 100 0 in
+  let initial_player = P.create_player 100 100 30 in
   let game_state =
     ref (GS.init board_width board_height initial_player |> GS.start)
   in
@@ -62,19 +62,6 @@ let () =
     I.print_inputs actions;
     game_state := C.handle_actions !game_state actions;
 
-    (* COMMENT OUT PREVIOUS CROP GROWTH CODE *)
-    (* Crop growth *)
-    (* if
-      !game_state.GS.phase = GS.Playing
-      && !game_state.GS.elapsed_time -. !last_crop_grow_time
-         >= crop_grow_interval
-    then (
-      crops := C.try_grow_all_crops !crops;
-      last_crop_grow_time := !game_state.GS.elapsed_time); *)
-
-    (* New code iterates through board and grows all soil blocks every
-       crop_grow_interval (same timing as before, but now integrated with
-       board)*)
     if
       !game_state.GS.phase = GS.Playing
       && !game_state.GS.elapsed_time -. !last_crop_grow_time
