@@ -1,10 +1,10 @@
 val load_assets : unit -> unit
-(** [load_assets] loads all assets corresponding to the shop into VRAM on the
-    GPU *)
+(** [load_assets ()] loads all shop-related textures and fonts into VRAM. *)
 
-val draw_shop : unit -> unit
-(** [draw_shop] draws the shop UI to the screen when the shop is open *)
+val draw_shop : bool -> unit
+(** [draw_shop shop_is_open] draws the shop interface on the screen. If
+    [shop_is_open] is [true] and the shop was previously closed, the speech
+    bubble will animate with a zoom-in effect. *)
 
 val unload_assets : unit -> unit
-(** [unload_assets] unloads all assets corresponding to the shop from VRAM on
-    the GPU *)
+(** [unload_assets ()] unloads all shop-related textures and fonts from VRAM. *)

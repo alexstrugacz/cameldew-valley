@@ -28,42 +28,42 @@ let crop_database = function
   | Wheat ->
       {
         kind = Wheat;
-        growth_rate = 0.3;
+        growth_rate = 0.7;
         max_stage = 4;
-        buy_price = 10;
-        sell_price = 20;
+        buy_price = 5;
+        sell_price = 12;
       }
   | Strawberry ->
       {
         kind = Strawberry;
-        growth_rate = 0.4;
+        growth_rate = 0.5;
         max_stage = 4;
-        buy_price = 5;
-        sell_price = 12;
+        buy_price = 12;
+        sell_price = 30;
+      }
+  | Grape ->
+      {
+        kind = Grape;
+        growth_rate = 0.3;
+        max_stage = 4;
+        buy_price = 20;
+        sell_price = 65;
       }
   | Tomato ->
       {
         kind = Tomato;
         growth_rate = 0.2;
         max_stage = 4;
-        buy_price = 15;
-        sell_price = 35;
-      }
-  | Grape ->
-      {
-        kind = Grape;
-        growth_rate = 0.15;
-        max_stage = 4;
-        buy_price = 25;
-        sell_price = 60;
+        buy_price = 35;
+        sell_price = 120;
       }
   | Pumpkin ->
       {
         kind = Pumpkin;
-        growth_rate = 0.2;
+        growth_rate = 0.12;
         max_stage = 4;
-        buy_price = 30;
-        sell_price = 90;
+        buy_price = 50;
+        sell_price = 185;
       }
 
 let next_id = ref 0
