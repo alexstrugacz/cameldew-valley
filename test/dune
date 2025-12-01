@@ -15,3 +15,8 @@
  (libraries ounit2 model)
 )
 
+(test
+ (name test_game_state)
+ (modules test_game_state)
+ (libraries ounit2 model)
+)
