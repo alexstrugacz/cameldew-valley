@@ -1,2 +1,17 @@
 (test
- (name test_cameldew_valley) (libraries ounit2 cameldew_valley))
+ (name test_cameldew_valley) 
+ (libraries ounit2 cameldew_valley)
+)
+
+(test
+ (name test_crop)
+ (modules test_crop)
+ (libraries ounit2 model)
+)
+
+(test
+ (name test_player)
+ (modules test_player)
+ (libraries ounit2 model)
+)
+

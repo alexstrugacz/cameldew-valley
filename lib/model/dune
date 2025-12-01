@@ -1,3 +1,5 @@
 (library
  (name model)
- (libraries unix))
+ (libraries unix)
+ (instrumentation (backend bisect_ppx))
+)

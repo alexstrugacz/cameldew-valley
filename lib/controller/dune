@@ -1,3 +1,5 @@
 (library
  (name controller)
- (libraries raylib model unix))
+ (libraries raylib model unix)
+ (instrumentation (backend bisect_ppx))
+)

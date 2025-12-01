@@ -60,7 +60,8 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
   | _, Pause -> GS.toggle_pause gs
   | GS.Playing, Move dir -> move gs dir
   | GS.Playing, Interact -> (
-      (* Check both the tile the player is standing on and the tile they're facing *)
+      (* Check both the tile the player is standing on and the tile they're
+         facing *)
       let player_tile_opt =
         B.get_tile gs.GS.board gs.GS.player.P.x gs.GS.player.P.y
       in
@@ -72,9 +73,9 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
       | _, Some B.Shop -> interact_with_shop gs
       | _, Some (B.Soil (Some crop)) -> interact_with_soil gs tile_x tile_y crop
       | _, _ -> gs)
-  | GS.Paused, Interact -> (
+  | GS.Paused, Interact ->
       (* When paused and shop open, allow closing shop by pressing F *)
-      interact_with_shop gs)
+      interact_with_shop gs
   | GS.Playing, Select_slot i ->
       let new_player = { gs.GS.player with selected_slot = i } in
       { gs with GS.player = new_player }
