@@ -37,6 +37,15 @@ let interact_with_shop gs =
   in
   { gs with GS.shop_open = new_shop_open; GS.phase = new_phase }
 
+(** [interact_with_soil gs tile_x tile_y crop] handles player interaction with a
+    soil tile containing [crop].
+
+    - If the crop is harvestable, the function: 1. Applies harvesting and
+      selling to the player model. 2. Attempts to add 3 new seeds of the same
+      crop type to the player. 3. Clears the soil tile on the board. 4. Returns
+      an updated game state with the modified player.
+
+    - If the crop is not harvestable, the game state is returned unchanged. *)
 let interact_with_soil gs tile_x tile_y crop =
   match crop with
   | Some crop ->

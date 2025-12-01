@@ -2,9 +2,9 @@ open OUnit2
 module P = Model.Player
 module Crop = Model.Crop
 
-(* [create_player] checks that a new player: - starts at the given (x,y) - faces
-   South uses the given starting coins - has 5 inventory slots - has
-   selected_slot = 0. *)
+(** [create_player] checks that a new player: - starts at the given (x,y) -
+    faces South uses the given starting coins - has 5 inventory slots - has
+    selected_slot = 0. *)
 let create_player _ =
   let p = P.create_player 10 20 50 in
   let x, y = P.get_current_tile p in
@@ -15,8 +15,8 @@ let create_player _ =
   assert_equal 5 (Array.length p.inventory);
   assert_equal 0 p.selected_slot
 
-(* [player_movement] checks that moving within bounds: - changes the tile by 4
-   units in the direction of movement - updates the facing direction. *)
+(** [player_movement] checks that moving within bounds: - changes the tile by 4
+    units in the direction of movement - updates the facing direction. *)
 let player_movement _ =
   let p = P.create_player 10 10 0 in
   let board_w, board_h = (100, 100) in
@@ -39,9 +39,9 @@ let player_movement _ =
   assert_equal 10 y3;
   assert_equal P.South p3.facing
 
-(* [can't_move_in_invalid_spots] attempting to move into the forbidden shop
-   region keeps the player's position unchanged, but still updates the facing
-   direction. *)
+(** [can't_move_in_invalid_spots] attempting to move into the forbidden shop
+    region keeps the player's position unchanged, but still updates the facing
+    direction. *)
 let can't_move_in_invalid_spots _ =
   let p = P.create_player 459 10 0 in
   let x0, y0 = P.get_current_tile p in
@@ -52,8 +52,8 @@ let can't_move_in_invalid_spots _ =
   assert_equal y0 y1;
   assert_equal P.East p'.facing
 
-(* [crop_slot_fixed_mapping] checks that each crop kind maps to the intended
-   fixed inventory index. *)
+(** [crop_slot_fixed_mapping] checks that each crop kind maps to the intended
+    fixed inventory index. *)
 let crop_slot_fixed_mapping _ =
   assert_equal 0 (P.slot_for_crop Crop.Wheat);
   assert_equal 1 (P.slot_for_crop Crop.Strawberry);
@@ -61,10 +61,10 @@ let crop_slot_fixed_mapping _ =
   assert_equal 3 (P.slot_for_crop Crop.Tomato);
   assert_equal 4 (P.slot_for_crop Crop.Pumpkin)
 
-(* [add_and_remove_seeds] checks the behavior of add_seeds / remove_seed WITHOUT
-   inspecting internal inventory slots: - add_seeds returns Some player -
-   remove_seed returns Some (player, kind) while seeds remain - after enough
-   removals, remove_seed returns None. *)
+(** [add_and_remove_seeds] checks the behavior of add_seeds / remove_seed
+    WITHOUT inspecting internal inventory slots: - add_seeds returns Some player
+    \- remove_seed returns Some (player, kind) while seeds remain - after enough
+    removals, remove_seed returns None. *)
 let add_and_remove_seeds _ =
   let base = P.create_player 0 0 0 in
   let idx = P.slot_for_crop Crop.Wheat in
@@ -96,21 +96,21 @@ let add_and_remove_seeds _ =
   let r3 = P.remove_seed p3 idx in
   assert_equal None r3
 
-(* [remove_seed_invalid_slot] checks that trying to remove from an invalid slot
-   index returns None. *)
+(** [remove_seed_invalid_slot] checks that trying to remove from an invalid slot
+    index returns None. *)
 let remove_seed_invalid_slot _ =
   let p = P.create_player 0 0 0 in
   assert_equal None (P.remove_seed p 999)
 
-(* [harvest_and_sell] checks that harvest_and_sell increases coins exactly by
-   the crop's sell_price. *)
+(** [harvest_and_sell] checks that harvest_and_sell increases coins exactly by
+    the crop's sell_price. *)
 let harvest_and_sell _ =
   let p = P.create_player 0 0 5 in
   let c = Crop.create_crop Crop.Tomato in
   let p' = P.harvest_and_sell p c in
   assert_equal (5 + c.Crop.stats.sell_price) p'.P.coins
 
-(* [get_current_tile] checks that get_current_tile just returns (x,y). *)
+(** [get_current_tile] checks that get_current_tile just returns (x,y). *)
 let get_current_tile _ =
   let p = P.create_player 7 9 0 in
   assert_equal (7, 9) (P.get_current_tile p)
