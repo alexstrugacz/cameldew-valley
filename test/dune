@@ -26,3 +26,9 @@
  (modules test_board)
  (libraries ounit2 model)
 )
+
+(test
+ (name test_game_controller)
+ (modules test_game_controller)
+ (libraries ounit2 model controller)
+)
