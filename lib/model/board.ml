@@ -7,11 +7,40 @@ type tile =
 
 type board = tile array array
 
+(* TODO: ask is this an ok amount of hardcoded info in the mode? just 12
+   points. *)
+let soil_points =
+  [
+    (415, 260);
+    (555, 260);
+    (695, 260);
+    (835, 260);
+    (415, 370);
+    (555, 370);
+    (695, 370);
+    (835, 370);
+    (415, 480);
+    (555, 480);
+    (695, 480);
+    (835, 480);
+  ]
+
+let soil_side_length = 30
+
+(** [is_soil x y] checks if ([x], [y]) is point in a soil block on the board *)
+let is_soil x y =
+  List.exists
+    (fun (x', y') ->
+      abs (x - x') <= soil_side_length && abs (y - y') <= soil_side_length)
+    soil_points
+
 (** [create_board width height] creates a new game board *)
 let create_board width height =
   Array.init height (fun y ->
       Array.init width (fun x ->
-          if 455 < x && x < 780 && -5 < y && y < 80 then Shop else Soil None))
+          if 455 < x && x < 780 && -5 < y && y < 80 then Shop
+          else if is_soil x y then Soil None
+          else Path))
 
 (** [get_tile board x y] gets tile at position (x, y)*)
 let get_tile board x y =
