@@ -11,3 +11,5 @@ val check_input : unit -> action list
 val print_inputs : action list -> unit
 (** [print_inputs] prints each [action] from the user input to the console (for
     testing) *)
+
+val pp_actions_from_inputs : action -> string

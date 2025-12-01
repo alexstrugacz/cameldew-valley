@@ -2,9 +2,9 @@ open OUnit2
 module GS = Model.Game_state
 module P = Model.Player
 
-(* [init_test] checks that init: - sets phase to NotPlaying - copies the
-   passed-in player and board size - resets elapsed time and shop_open - builds
-   a board with the right dimensions. *)
+(** [init_test] checks that init: - sets phase to NotPlaying - copies the
+    passed-in player and board size - resets elapsed time and shop_open - builds
+    a board with the right dimensions. *)
 let init_test _ =
   let p = P.create_player 0 0 10 in
   let gs = GS.init 1280 720 p in
@@ -18,9 +18,9 @@ let init_test _ =
   assert_equal 720 (Array.length gs.board);
   assert_equal 1280 (Array.length gs.board.(0))
 
-(* [start_playing] checks that start: - transitions NotPlaying -> Playing -
-   resets player to initial_player - resets elapsed_time - is a no op if already
-   Playing. *)
+(** [start_playing] checks that start: - transitions NotPlaying -> Playing -
+    resets player to initial_player - resets elapsed_time - is a no op if
+    already Playing. *)
 let start_playing _ =
   let p = P.create_player 0 0 0 in
   let gs0 = GS.init 10 10 p in
@@ -44,8 +44,8 @@ let start_playing _ =
   assert_equal GS.Playing gs_resumed.phase;
   assert_equal gs_paused.player gs_resumed.player
 
-(* [stop_playing] checks that stop: - transitions Playing -> NotPlaying - is a
-   no op if already NotPlaying. *)
+(** [stop_playing] checks that stop: - transitions Playing -> NotPlaying - is a
+    no op if already NotPlaying. *)
 let stop_playing _ =
   let p = P.create_player 0 0 0 in
   let gs0 = GS.init 10 10 p in
@@ -66,8 +66,8 @@ let stop_playing _ =
   let gs_stop2 = GS.stop gs_stop in
   assert_equal GS.NotPlaying gs_stop2.phase
 
-(* [toggle_pause] checks that toggle_pause: - does nothing from NotPlaying -
-   flips between Playing and Paused if it is playing. *)
+(** [toggle_pause] checks that toggle_pause: - does nothing from NotPlaying -
+    flips between Playing and Paused if it is playing. *)
 let toggle_pause _ =
   let p = P.create_player 0 0 0 in
   let gs0 = GS.init 10 10 p in

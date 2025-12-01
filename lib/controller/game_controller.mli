@@ -41,7 +41,6 @@ val take_action :
   Input_handler.action ->
   Model.Game_state.game_state
 
-val get_random_crop_type : unit -> Model.Crop.crop_kind
 val create_initial_crops : int -> Model.Crop.crop_instance list
 val try_grow_crop : Model.Crop.crop_instance -> Model.Crop.crop_instance
 
