@@ -25,7 +25,7 @@ let soil_points =
     (835, 480);
   ]
 
-let soil_side_length = 100
+let soil_side_length = 150
 
 (** [is_soil x y] checks if ([x], [y]) is point in a soil block on the board *)
 let is_soil x y =
