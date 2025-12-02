@@ -23,7 +23,6 @@ val interact_with_soil :
   Model.Game_state.game_state ->
   int ->
   int ->
-  Model.Crop.crop_instance ->
   Model.Game_state.game_state
 (** [interact_with_soil gs x y crop] processes an interaction with a soil tile
     at coordinates [(x, y)] that contains [crop].

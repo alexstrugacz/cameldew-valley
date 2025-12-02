@@ -14,6 +14,7 @@ let move (gs : GS.game_state) (dir : P.direction) : GS.game_state =
   let new_p =
     P.move_player gs.GS.player dir gs.GS.board_width gs.GS.board_height
   in
+  (* TODO: remove debugging output before submitting *)
   Printf.printf "The player's location is: (%s, %s) " (string_of_int new_p.x)
     (string_of_int new_p.y);
   { gs with GS.player = new_p }
@@ -45,23 +46,45 @@ let interact_with_shop gs =
       an updated game state with the modified player.
 
     - If the crop is not harvestable, the game state is returned unchanged. *)
-let interact_with_soil gs tile_x tile_y crop =
-  if Crop.is_harvestable crop then (
-    let player = gs.GS.player in
-    (* Game state after harvesting and selling. *)
-    let player_model_after_harvest =
-      let player' = P.harvest_and_sell player crop in
-      let player_opt'' = P.add_seeds player' crop.stats.kind 3 in
-      (* TODO: player model has kinda weird add_seeds func since it returns
-         player_opt, might want to change that *)
-      match player_opt'' with
-      | Some player -> player
-      | None -> player'
-    in
-    B.set_tile gs.GS.board tile_x tile_y (B.Soil None);
-    { gs with GS.player = player_model_after_harvest }
-    (* If the crop is not harvestable, do nothing. *))
-  else gs
+let interact_with_soil gs tile_x tile_y =
+  let board = gs.GS.board in
+  let player = gs.GS.player in
+  let selected_slot = gs.GS.player.selected_slot in
+  match B.get_nearest_soil_point tile_x tile_y with
+  | None -> gs
+  | Some (x, y) -> (
+      match B.get_tile board x y with
+      | Some (B.Soil None) -> (
+          (* Plant a crop *)
+          match P.remove_seed player selected_slot with
+          | None -> gs
+          | Some (player', crop_kind_seed_removed) ->
+              let new_crop = Crop.create_crop crop_kind_seed_removed in
+              B.set_tile board x y (B.Soil (Some new_crop));
+              { gs with GS.player = player' })
+      | Some (B.Soil (Some crop)) ->
+          if Crop.is_harvestable crop then (
+            (* Harvest a crop *)
+            let player' = P.harvest_and_sell player crop in
+            let player'' =
+              match P.add_seeds player' crop.stats.kind 3 with
+              | Some p -> p
+              | None -> player'
+            in
+            B.set_tile board x y (B.Soil None);
+            { gs with GS.player = player'' })
+          else gs
+      | Some B.Shop -> gs
+      | Some B.Path -> gs
+      | None -> gs)
+
+let select_slot_index_crop_type = function
+  | 0 -> Crop.Wheat
+  | 1 -> Crop.Strawberry
+  | 2 -> Crop.Grape
+  | 3 -> Crop.Tomato
+  | 4 -> Crop.Pumpkin
+  | _ -> Crop.Wheat
 
 let take_action (gs : GS.game_state) (action : Input_handler.action) :
     GS.game_state =
@@ -80,7 +103,7 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
       match (player_tile_opt, facing_tile_opt) with
       | Some B.Shop, _ -> interact_with_shop gs
       | _, Some B.Shop -> interact_with_shop gs
-      | _, Some (B.Soil (Some crop)) -> interact_with_soil gs tile_x tile_y crop
+      | _, Some (B.Soil _) -> interact_with_soil gs tile_x tile_y
       | _, _ -> gs)
   | GS.Paused, Interact ->
       (* When paused and shop open, allow closing shop by pressing F *)
@@ -88,6 +111,27 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
   | GS.Playing, Select_slot i ->
       let new_player = { gs.GS.player with selected_slot = i } in
       { gs with GS.player = new_player }
+  | GS.Paused, Select_slot i ->
+      (* potentially move this into a helper named buy_from_shop *)
+      if gs.GS.shop_open then
+        let check_if_player_exists p =
+          match p with
+          | Some p -> p
+          | None -> gs.GS.player
+        in
+        let seed_kind_selected = select_slot_index_crop_type i in
+        let coins_to_subtract =
+          (Crop.crop_database seed_kind_selected).buy_price
+        in
+        if gs.GS.player.coins - coins_to_subtract >= 0 then
+          let new_player =
+            check_if_player_exists
+              (P.add_seeds gs.GS.player seed_kind_selected 3)
+          in
+          let new_player' = P.remove_coins new_player coins_to_subtract in
+          { gs with GS.player = new_player' }
+        else gs
+      else gs
   | GS.Paused, _ | GS.NotPlaying, _ -> gs
 
 (* Apply a whole list of actions in sequence *)

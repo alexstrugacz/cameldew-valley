@@ -53,3 +53,7 @@ val harvest_and_sell : player -> Crop.crop_instance -> player
 val get_current_tile : player -> int * int
 (** [get_current_tile player] returns the player's current position as a tuple
     [(x, y)]. *)
+
+val remove_coins : player -> int -> player
+(** [remove_coins player num_coins] returns player with [num_coins] subtracted
+    from the current number of coins *)
