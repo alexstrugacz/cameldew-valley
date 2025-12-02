@@ -102,3 +102,8 @@ let harvest_and_sell player crop =
 
 (** [get_current_tile player] returns player's current position *)
 let get_current_tile player = (player.x, player.y)
+
+(** [remove_coins player num_coins] returns player with [num_coins] subtracted
+    from the current number of coins *)
+let remove_coins player num_coins =
+  { player with coins = player.coins - num_coins }
