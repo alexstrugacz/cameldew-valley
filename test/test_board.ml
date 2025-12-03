@@ -46,7 +46,7 @@ let get_facing_tile_SOUTH _ =
   assert_equal 2 fy;
   match tile_opt with
   | Some B.Path -> ()
-  | _ -> assert_failure "Expected Soil None in front of player"
+  | _ -> assert_failure "Expected Path in front of player"
 
 let get_facing_tile_EAST _ =
   let b = B.create_board 3 3 in
@@ -57,7 +57,7 @@ let get_facing_tile_EAST _ =
   assert_equal 1 fy;
   match tile_opt with
   | Some B.Path -> ()
-  | _ -> assert_failure "Expected Soil None"
+  | _ -> assert_failure "Expected Path"
 
 let get_facing_tile_NORTH _ =
   let b = B.create_board 3 3 in
@@ -68,7 +68,7 @@ let get_facing_tile_NORTH _ =
   assert_equal 0 fy;
   match tile_opt with
   | Some B.Path -> ()
-  | _ -> assert_failure "Expected Soil None"
+  | _ -> assert_failure "Expected Path"
 
 let get_facing_tile_WEST _ =
   let b = B.create_board 3 3 in
@@ -79,7 +79,7 @@ let get_facing_tile_WEST _ =
   assert_equal 1 fy;
   match tile_opt with
   | Some B.Path -> ()
-  | _ -> assert_failure "Expected Soil None"
+  | _ -> assert_failure "Expected Path"
 
 let suite =
   "board tests"
