@@ -8,7 +8,8 @@ type action =
 
 (* Raylib will shadow types from our player model, need to assign our player
    model to an alias to avoid shadowing! *)
-let check_input () =
+
+let[@coverage off] check_input () =
   let open Raylib in
   let inputs = ref [] in
 

@@ -1,6 +1,7 @@
 open OUnit2
 module B = Model.Board
 module P = Model.Player
+module C = Model.Crop
 
 (** [board_dims] checks that create_board allocates a grid with the correct
     requested width and height. *)
@@ -81,6 +82,31 @@ let get_facing_tile_WEST _ =
   | Some B.Path -> ()
   | _ -> assert_failure "Expected Soil None"
 
+let test_nearest_point _ =
+  let p0 = P.create_player 415 370 0 in
+  let point = B.get_nearest_soil_point p0.x p0.y in
+  assert_equal (Some (415, 370)) point;
+  match point with
+  | Some (x, y) ->
+      assert_equal 0 (x - 415);
+      assert_equal 0 (y - 370)
+  | None -> assert_failure "Expected Some (x,y) from get_nearest_soil_point"
+
+let board_iterate_thru_all _ =
+  let board = B.create_board 100 100 in
+  let soil_count = ref 0 in
+  let shop_count = ref 0 in
+  let path_count = ref 0 in
+
+  B.board_iterate
+    (fun _ _ tile ->
+      match tile with
+      | Soil _ -> incr soil_count
+      | Shop -> incr shop_count
+      | Path -> incr path_count)
+    board;
+  assert (!soil_count + !shop_count + !path_count = 100 * 100)
+
 let suite =
   "board tests"
   >::: [
@@ -92,6 +118,8 @@ let suite =
          "facing_east" >:: get_facing_tile_EAST;
          "facing_north" >:: get_facing_tile_NORTH;
          "facing_west" >:: get_facing_tile_WEST;
+         "nearest_soil_point" >:: test_nearest_point;
+         "board_iterate_thru_all" >:: board_iterate_thru_all;
        ]
 
 let () = run_test_tt_main suite
