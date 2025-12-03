@@ -1,7 +1,6 @@
 open OUnit2
 module B = Model.Board
 module P = Model.Player
-module C = Model.Crop
 
 (** [board_dims] checks that create_board allocates a grid with the correct
     requested width and height. *)
