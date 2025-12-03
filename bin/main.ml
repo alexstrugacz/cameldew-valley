@@ -35,7 +35,7 @@ let () =
   SR.load_assets ();
 
   let board_width = 1200 in
-  let board_height = 600 in
+  let board_height = 700 in
   let initial_player = P.create_player 100 100 30 in
   let game_state =
     ref (GS.init board_width board_height initial_player |> GS.start)

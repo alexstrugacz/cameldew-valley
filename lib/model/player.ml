@@ -35,7 +35,12 @@ let create_player x y starting_coins =
 (** [forbidden] represents locations the user can't traverse *)
 let forbidden =
   [
-    (* SHOP AREA*) (460, 0, 765, 55); (* CORNER TREE AREA *) (1095, 0, 1280, 70);
+    (* SHOP AREA*)
+    (460, 0, 765, 55);
+    (* CORNER TREE AREA *)
+    (1095, 0, 1280, 70);
+    (*BOTTOM*)
+    (0, 600, 1280, 600);
   ]
 (* x1, y1, x2, y2 *)
 

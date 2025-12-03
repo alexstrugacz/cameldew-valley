@@ -25,18 +25,17 @@ let soil_points =
     (835, 480);
   ]
 
-let soil_side_length = 100
+let soil_side_length = 500
 
 (** [is_soil x y] checks if ([x], [y]) is point in a soil block on the board *)
-let is_soil x y =
-  List.exists
-    (fun (x', y') ->
-      abs (x - x') <= soil_side_length && abs (y - y') <= soil_side_length)
-    soil_points
+let is_soil x y = true
 
 let get_nearest_soil_point x y =
-  let nearest_distance_squared = ref 1280 in
+  let x = x - 60 in
+  let y = y - 140 in
+  let nearest_distance_squared = ref 7500 in
   let nearest_point = ref None in
+
   List.iter
     (fun (x', y') ->
       let x_dist = x - x' in
@@ -75,10 +74,10 @@ let set_tile board x y tile =
 let get_facing_tile board player =
   let x, y =
     match player.Player.facing with
-    | Player.North -> (player.x, player.y - 1)
-    | Player.South -> (player.x, player.y + 1)
-    | Player.West -> (player.x - 1, player.y)
-    | Player.East -> (player.x + 1, player.y)
+    | Player.North -> (player.x + 55, player.y + 120)
+    | Player.South -> (player.x + 55, player.y + 230)
+    | Player.West -> (player.x - 20, player.y + 190)
+    | Player.East -> (player.x + 120, player.y + 190)
   in
   (x, y, get_tile board x y)
 
