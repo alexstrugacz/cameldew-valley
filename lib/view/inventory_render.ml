@@ -140,27 +140,27 @@ let draw_inventory (player : P.player) =
       (font_size + 5) 1.0 Color.white
   in
 
-  (* Draw all 5 inventory slots *)
-  Array.iteri
-    (fun idx slot ->
-      let tex =
-        match idx with
-        | 0 ->
-            texture_for_slot 0 player.selected_slot
-              (wheat_texture, wheat_sel_texture)
-        | 1 ->
-            texture_for_slot 1 player.selected_slot
-              (strawberry_texture, strawberry_sel_texture)
-        | 2 ->
-            texture_for_slot 2 player.selected_slot
-              (grape_texture, grape_sel_texture)
-        | 3 ->
-            texture_for_slot 3 player.selected_slot
-              (tomato_texture, tomato_sel_texture)
-        | 4 ->
-            texture_for_slot 4 player.selected_slot
-              (pumpkin_texture, pumpkin_sel_texture)
-        | _ -> failwith "Invalid slot index"
-      in
-      draw_slot idx tex slot)
-    player.P.inventory
+  (* Draw all inventory slots *)
+  for i = Array.length player.P.inventory - 1 downto 0 do
+    let slot = player.P.inventory.(i) in
+    let tex =
+      match i with
+      | 0 ->
+          texture_for_slot 0 player.selected_slot
+            (wheat_texture, wheat_sel_texture)
+      | 1 ->
+          texture_for_slot 1 player.selected_slot
+            (strawberry_texture, strawberry_sel_texture)
+      | 2 ->
+          texture_for_slot 2 player.selected_slot
+            (grape_texture, grape_sel_texture)
+      | 3 ->
+          texture_for_slot 3 player.selected_slot
+            (tomato_texture, tomato_sel_texture)
+      | 4 ->
+          texture_for_slot 4 player.selected_slot
+            (pumpkin_texture, pumpkin_sel_texture)
+      | _ -> failwith "Invalid slot index"
+    in
+    draw_slot i tex slot
+  done
