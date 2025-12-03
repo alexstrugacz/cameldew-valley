@@ -5,10 +5,6 @@ val handle_actions :
 (** [handle_actions gs actions] returns a new game_state representing all
     [actions] applied to [gs]. *)
 
-val create_initial_crops : int -> Model.Crop.crop_instance list
-(** [create_initial_crops num_crops] creates [num_crops] crops at an initial
-    growth stage of 0. For now, all are strawberries (but this will change). *)
-
 val try_grow_all_crops :
   Model.Crop.crop_instance list -> Model.Crop.crop_instance list
 (** [try_grow_all_crops crop_list] tries to increment the growth stage of each
@@ -40,8 +36,4 @@ val take_action :
   Input_handler.action ->
   Model.Game_state.game_state
 
-val create_initial_crops : int -> Model.Crop.crop_instance list
 val try_grow_crop : Model.Crop.crop_instance -> Model.Crop.crop_instance
-
-val try_grow_all_crops :
-  Model.Crop.crop_instance list -> Model.Crop.crop_instance list

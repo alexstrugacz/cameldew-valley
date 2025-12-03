@@ -40,8 +40,6 @@ let () =
   let game_state =
     ref (GS.init board_width board_height initial_player |> GS.start)
   in
-  (* COMMENT OUT OLD HARD-CODED CROP GROWTH CODE  *)
-  (* let crops = ref (C.create_initial_crops 12) in  *)
   let crop_grow_interval = 5.0 in
   let last_crop_grow_time = ref 0.0 in
 
@@ -101,29 +99,6 @@ let () =
 
     (* Player layer logic *)
     let player = !game_state.GS.player in
-
-    (* COMMENT OUT PREVIOUS CROP HARDCODED CROP RENDER CODE *)
-
-    (* let layer = match player.y with | x when x < 200 -> 1 | x when x < 310 ->
-       2 | x when x < 420 -> 3 | _ -> 4 in *)
-
-    (* (* Draw crops and player based on layers *) if layer = 1 then
-       PR.draw_player player delta_time moving; CR.draw_crop (List.nth !crops 0)
-       415.0 260.0; CR.draw_crop (List.nth !crops 1) 555.0 260.0; CR.draw_crop
-       (List.nth !crops 2) 695.0 260.0; CR.draw_crop (List.nth !crops 3) 835.0
-       260.0;
-
-       if layer = 2 then PR.draw_player player delta_time moving; CR.draw_crop
-       (List.nth !crops 4) 415.0 370.0; CR.draw_crop (List.nth !crops 5) 555.0
-       370.0; CR.draw_crop (List.nth !crops 6) 695.0 370.0; CR.draw_crop
-       (List.nth !crops 7) 835.0 370.0;
-
-       if layer = 3 then PR.draw_player player delta_time moving; CR.draw_crop
-       (List.nth !crops 8) 415.0 480.0; CR.draw_crop (List.nth !crops 9) 555.0
-       480.0; CR.draw_crop (List.nth !crops 10) 695.0 480.0; CR.draw_crop
-       (List.nth !crops 11) 835.0 480.0; if layer = 4 then *)
-
-    (* NEW CROP RENDER CODE *)
     let board = !game_state.GS.board in
     B.board_iterate
       (fun x y tile ->

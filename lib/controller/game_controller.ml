@@ -14,9 +14,6 @@ let move (gs : GS.game_state) (dir : P.direction) : GS.game_state =
   let new_p =
     P.move_player gs.GS.player dir gs.GS.board_width gs.GS.board_height
   in
-  (* TODO: remove debugging output before submitting *)
-  Printf.printf "The player's location is: (%s, %s) " (string_of_int new_p.x)
-    (string_of_int new_p.y);
   { gs with GS.player = new_p }
 
 (** [interact_with_shop gs] toggles the shop open/closed and pauses/unpauses the
@@ -150,10 +147,6 @@ let get_random_crop_type () =
   | 3 -> Crop.Grape
   | 4 -> Crop.Pumpkin
   | _ -> Crop.Strawberry
-
-(* Create 12 crops. *)
-let create_initial_crops (num_crops : int) : Crop.crop_instance list =
-  List.init 12 (fun i -> Crop.create_crop (get_random_crop_type ()))
 
 let try_grow_crop (crop : Crop.crop_instance) : Crop.crop_instance =
   Crop.try_grow crop
