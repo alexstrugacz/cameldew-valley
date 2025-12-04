@@ -1,3 +1,3 @@
 (library
  (name cameldew_valley)
- (libraries model controller view raylib unix))
+ (libraries model controller view raylib unix sqlite3))

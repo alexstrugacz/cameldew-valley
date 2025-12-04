@@ -3,6 +3,14 @@ type action =
   | Interact
   | Select_slot of int
   | Pause
+  | Start
+  | Exit
+
+(** [get_text_input ()] returns the character that was pressed, or None if no valid text input *)
+val get_text_input : unit -> char option
+
+(** [is_backspace_pressed ()] returns true if backspace was pressed *)
+val is_backspace_pressed : unit -> bool
 
 val check_input : unit -> action list
 (** [check_input] immediately returns a list of each [action] taken by the user

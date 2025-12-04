@@ -7,7 +7,7 @@ module P = Model.Player
     a board with the right dimensions. *)
 let init_test _ =
   let p = P.create_player 0 0 10 in
-  let gs = GS.init 1280 720 p in
+  let gs = GS.init 1280 720 p "TestPlayer" in
   assert_equal GS.NotPlaying gs.phase;
   assert_equal p gs.player;
   assert_equal p gs.initial_player;
@@ -23,7 +23,7 @@ let init_test _ =
     already Playing. *)
 let start_playing _ =
   let p = P.create_player 0 0 0 in
-  let gs0 = GS.init 10 10 p in
+  let gs0 = GS.init 10 10 p "TestPlayer" in
 
   (* NotPlaying -> Playing *)
   let gs1 = GS.start gs0 in
@@ -48,7 +48,7 @@ let start_playing _ =
     no op if already NotPlaying. *)
 let stop_playing _ =
   let p = P.create_player 0 0 0 in
-  let gs0 = GS.init 10 10 p in
+  let gs0 = GS.init 10 10 p "TestPlayer" in
 
   (* Playing -> NotPlaying *)
   let gs_play = GS.start gs0 in
@@ -70,7 +70,7 @@ let stop_playing _ =
     flips between Playing and Paused if it is playing. *)
 let toggle_pause _ =
   let p = P.create_player 0 0 0 in
-  let gs0 = GS.init 10 10 p in
+  let gs0 = GS.init 10 10 p "TestPlayer" in
   let gs_np = GS.toggle_pause gs0 in
   assert_equal GS.NotPlaying gs_np.phase;
   let gs_play = GS.start gs0 in

@@ -15,9 +15,10 @@ type game_state = {
   board : B.board;
   elapsed_time : float;
   shop_open : bool;
+  username : string;
 }
 
-let init board_width board_height player =
+let init board_width board_height player username =
   {
     phase = NotPlaying;
     player;
@@ -27,6 +28,7 @@ let init board_width board_height player =
     board = B.create_board board_width board_height;
     elapsed_time = 0.0;
     shop_open = false;
+    username;
   }
 
 let start game_state =

@@ -14,10 +14,11 @@ type game_state = {
   board : Board.board;
   elapsed_time : float;
   shop_open : bool;
+  username : string;
 }
 
-(** [init w h p game_state] initializes the game's state [game_state] with  width [w], height [h], and player [p]. *)
-val init : int -> int -> Player.player -> game_state
+(** [init w h p username] initializes the game's state with width [w], height [h], player [p], and username [username]. *)
+val init : int -> int -> Player.player -> string -> game_state
 
 (** [start game_state] given a [game_state] changes the phase to [Playing]. *)
 val start : game_state -> game_state

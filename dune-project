@@ -19,7 +19,7 @@
  (name cameldew-valley)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml)
+ (depends ocaml sqlite3)
  (tags
   ("add topics" "to describe" your project)))
 

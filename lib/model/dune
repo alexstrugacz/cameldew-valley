@@ -1,5 +1,5 @@
 (library
  (name model)
- (libraries unix)
+ (libraries unix sqlite3)
  (instrumentation (backend bisect_ppx))
 )

@@ -129,7 +129,17 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
           { gs with GS.player = new_player' }
         else gs
       else gs
-  | GS.Paused, _ | GS.NotPlaying, _ -> gs
+  | GS.Paused, Start ->
+      (* Start from paused: reset player stats, reset timer, unpause *)
+      {
+        gs with
+        GS.player = gs.GS.initial_player;
+        GS.elapsed_time = 0.0;
+        GS.phase = GS.Playing;
+        GS.board = B.create_board gs.GS.board_width gs.GS.board_height;
+      }
+  | GS.Paused, Exit | GS.Playing, Exit | GS.NotPlaying, Exit -> gs
+  | GS.Paused, _ | GS.NotPlaying, _ | GS.Playing, Start -> gs
 
 (* Apply a whole list of actions in sequence *)
 let handle_actions (gs : GS.game_state) (actions : Input_handler.action list) :
