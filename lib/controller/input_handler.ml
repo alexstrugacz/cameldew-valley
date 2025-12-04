@@ -11,8 +11,9 @@ type action =
 (* Raylib will shadow types from our player model, need to assign our player
    model to an alias to avoid shadowing! *)
 
-(** [get_text_input ()] returns the character that was pressed, or None if no valid text input *)
-let get_text_input () =
+(** [get_text_input ()] returns the character that was pressed, or None if no
+    valid text input *)
+let[@coverage off] get_text_input () =
   let open Raylib in
   let add_char c = Some c in
   if is_key_pressed Key.A then add_char 'a'
@@ -54,7 +55,7 @@ let get_text_input () =
   else None
 
 (** [is_backspace_pressed ()] returns true if backspace was pressed *)
-let is_backspace_pressed () =
+let[@coverage off] is_backspace_pressed () =
   let open Raylib in
   is_key_pressed Key.Backspace
 

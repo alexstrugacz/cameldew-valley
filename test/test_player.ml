@@ -115,6 +115,21 @@ let get_current_tile _ =
   let p = P.create_player 7 9 0 in
   assert_equal (7, 9) (P.get_current_tile p)
 
+(** [remove_coins] checks to make sure that removing coins when player buys
+    items works correctly*)
+let remove_coins _ =
+  let p = P.create_player 0 0 100 in
+  let p' = P.remove_coins p 30 in
+  assert_equal 70 p'.P.coins;
+
+  (* Test removing all coins *)
+  let p'' = P.remove_coins p' 70 in
+  assert_equal 0 p''.P.coins;
+
+  (* Test removing more coins than available (goes negative) *)
+  let p''' = P.remove_coins p 150 in
+  assert_equal (-50) p'''.P.coins
+
 let suite =
   "player tests"
   >::: [
@@ -126,6 +141,7 @@ let suite =
          "remove_seed_invalid_slot" >:: remove_seed_invalid_slot;
          "harvest_and_sell" >:: harvest_and_sell;
          "get_current_tile" >:: get_current_tile;
+         "remove_coins" >:: remove_coins;
        ]
 
 let () = run_test_tt_main suite

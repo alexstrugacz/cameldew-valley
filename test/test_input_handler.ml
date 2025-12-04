@@ -79,6 +79,16 @@ let test_print_inputs_all_constructors_does_not_raise _ =
   in
   assert_bool "print_inputs actions shldnt raise err" ok
 
+(** [test_pp_start] checks that Start is pretty printed correctly *)
+let test_pp_start _ =
+  let s = IH.pp_actions_from_inputs IH.Start in
+  assert_equal "Start" s
+
+(** [test_pp_exit] checks that Exit is pretty printed correctly. *)
+let test_pp_exit _ =
+  let s = IH.pp_actions_from_inputs IH.Exit in
+  assert_equal "Exit" s
+
 let suite =
   "input_handler tests"
   >::: [
@@ -94,6 +104,8 @@ let suite =
          >:: test_print_inputs_empty_does_not_raise;
          "print_inputs_all_constructors_does_not_raise"
          >:: test_print_inputs_all_constructors_does_not_raise;
+         "test_pp_start" >:: test_pp_start;
+         "test_pp_exit" >:: test_pp_exit;
        ]
 
 let () = run_test_tt_main suite
