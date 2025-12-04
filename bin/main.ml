@@ -43,7 +43,7 @@ let () =
   ST.load ();
 
   (* Game configuration *)
-  let game_duration = 60.0 in
+  let game_duration = 120.0 in
   let board_width = 1200 in
   let board_height = 700 in
 

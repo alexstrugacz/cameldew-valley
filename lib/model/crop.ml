@@ -36,7 +36,7 @@ let crop_database = function
   | Strawberry ->
       {
         kind = Strawberry;
-        growth_rate = 0.5;
+        growth_rate = 0.55;
         max_stage = 4;
         buy_price = 12;
         sell_price = 30;
@@ -44,7 +44,7 @@ let crop_database = function
   | Grape ->
       {
         kind = Grape;
-        growth_rate = 0.3;
+        growth_rate = 0.45;
         max_stage = 4;
         buy_price = 20;
         sell_price = 65;
@@ -52,7 +52,7 @@ let crop_database = function
   | Tomato ->
       {
         kind = Tomato;
-        growth_rate = 0.2;
+        growth_rate = 0.35;
         max_stage = 4;
         buy_price = 35;
         sell_price = 120;
@@ -60,7 +60,7 @@ let crop_database = function
   | Pumpkin ->
       {
         kind = Pumpkin;
-        growth_rate = 0.12;
+        growth_rate = 0.25;
         max_stage = 4;
         buy_price = 50;
         sell_price = 185;
