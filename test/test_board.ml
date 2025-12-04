@@ -81,6 +81,7 @@ let get_facing_tile_WEST _ =
   | Some B.Path -> ()
   | _ -> assert_failure "Expected Path"
 
+(**[test_nearest_point] finds nearest soil point and makes sure its correct*)
 let test_nearest_point _ =
   let p0 = P.create_player 475 510 0 in
   let point = B.get_nearest_soil_point p0.x p0.y in
@@ -91,6 +92,8 @@ let test_nearest_point _ =
       assert_equal 0 (y - 370)
   | None -> assert_failure "Expected Some (x,y) from get_nearest_soil_point"
 
+(**[board_iterate_thru_all] makes sure that the board iterates through all
+   points*)
 let board_iterate_thru_all _ =
   let board = B.create_board 100 100 in
   let soil_count = ref 0 in

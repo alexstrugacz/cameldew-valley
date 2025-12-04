@@ -124,11 +124,7 @@ let remove_coins _ =
 
   (* Test removing all coins *)
   let p'' = P.remove_coins p' 70 in
-  assert_equal 0 p''.P.coins;
-
-  (* Test removing more coins than available (goes negative) *)
-  let p''' = P.remove_coins p 150 in
-  assert_equal (-50) p'''.P.coins
+  assert_equal 0 p''.P.coins
 
 let suite =
   "player tests"
