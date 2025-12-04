@@ -24,7 +24,7 @@ let interact_with_shop gs =
     if new_shop_open then
       (* Opening shop: pause if currently playing *)
       match gs.GS.phase with
-      | GS.Playing -> GS.Paused
+      | GS.Playing -> gs.GS.phase
       | _ -> gs.GS.phase
     else
       (* Closing shop: resume if paused *)
@@ -106,29 +106,28 @@ let take_action (gs : GS.game_state) (action : Input_handler.action) :
       (* When paused and shop open, allow closing shop by pressing F *)
       interact_with_shop gs
   | GS.Playing, Select_slot i ->
-      let new_player = { gs.GS.player with selected_slot = i } in
-      { gs with GS.player = new_player }
-  | GS.Paused, Select_slot i ->
-      (* potentially move this into a helper named buy_from_shop *)
       if gs.GS.shop_open then
-        let check_if_player_exists p =
-          match p with
-          | Some p -> p
-          | None -> gs.GS.player
-        in
+        (* Buying from shop logic *)
         let seed_kind_selected = select_slot_index_crop_type i in
         let coins_to_subtract =
           (Crop.crop_database seed_kind_selected).buy_price
         in
         if gs.GS.player.coins - coins_to_subtract >= 0 then
           let new_player =
-            check_if_player_exists
-              (P.add_seeds gs.GS.player seed_kind_selected 3)
+            match P.add_seeds gs.GS.player seed_kind_selected 3 with
+            | Some p -> p
+            | None -> gs.GS.player
           in
           let new_player' = P.remove_coins new_player coins_to_subtract in
           { gs with GS.player = new_player' }
         else gs
-      else gs
+      else
+        (* Normal inventory swap *)
+        let new_player = { gs.GS.player with selected_slot = i } in
+        { gs with GS.player = new_player }
+  | GS.Paused, Select_slot _ ->
+      (* Do nothing while paused *)
+      gs
   | GS.Paused, Start ->
       (* Start from paused: reset player stats, reset timer, unpause *)
       {

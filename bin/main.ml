@@ -7,6 +7,7 @@ module IR = View.Inventory_render
 module CO = View.Coin_render
 module CL = View.Clock_render
 module SR = View.Shop_render
+module PS = View.Pause_render
 module LR = View.Leaderboard_render
 module ST = View.Start
 module I = Controller.Input_handler
@@ -41,7 +42,7 @@ let () =
   SR.load_assets ();
   LR.load ();
   ST.load ();
-
+  PS.load ();
   (* Game configuration *)
   let game_duration = 120.0 in
   let board_width = 1200 in
@@ -103,8 +104,32 @@ let () =
           game_ended := true));
 
       let actions = I.check_input () in
-      I.print_inputs actions;
-      game_state := C.handle_actions !game_state actions;
+
+      let filtered_actions =
+        if !game_state.GS.shop_open then
+          (* When in shop: block movement & interact, except F is allowed only
+             when Playing *)
+          List.filter
+            (fun action ->
+              match (!game_state.GS.phase, action) with
+              | GS.Playing, I.Interact -> true (* F closes shop *)
+              | _, I.Select_slot _ | _, I.Pause | _, I.Exit | _, I.Start -> true
+              | _ -> false)
+            actions
+        else
+          (* Normal phase-based filtering *)
+          match !game_state.GS.phase with
+          | GS.Paused ->
+              List.filter
+                (function
+                  | I.Pause | I.Exit -> true
+                  | _ -> false)
+                actions
+          | GS.Playing -> actions
+          | GS.NotPlaying -> actions
+      in
+
+      game_state := C.handle_actions !game_state filtered_actions;
 
       if
         !game_state.GS.phase = GS.Playing
@@ -121,13 +146,14 @@ let () =
           board;
         last_crop_grow_time := !game_state.GS.elapsed_time);
 
-      (* Player movement check *)
+      (* Player movement should use filtered actions, so basically it won't move
+         when paused *)
       let moving =
         List.exists
           (function
             | I.Move _ -> true
             | _ -> false)
-          actions
+          filtered_actions
       in
 
       (* Background animation *)
@@ -165,6 +191,8 @@ let () =
       (* Draw Shop if open *)
       SR.draw_shop !game_state.GS.shop_open;
 
+      if !game_state.GS.phase = GS.Paused then PS.draw_pause ();
+
       end_drawing ());
 
     (* Drawing leaderboard if showing *)
@@ -185,5 +213,6 @@ let () =
   SR.unload_assets ();
   LR.unload ();
   ST.unload ();
+  PS.unload ();
   Array.iter unload_texture frames;
   close_window ()
