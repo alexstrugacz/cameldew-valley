@@ -25,10 +25,14 @@ let soil_points =
     (835, 480);
   ]
 
-let soil_side_length = 500
+let soil_side_length = 250
 
 (** [is_soil x y] checks if ([x], [y]) is point in a soil block on the board *)
-let is_soil x y = true
+let is_soil x y =
+  List.exists
+    (fun (x', y') ->
+      abs (x - x') <= soil_side_length && abs (y - y') <= soil_side_length)
+    soil_points
 
 let get_nearest_soil_point x y =
   let x = x - 60 in

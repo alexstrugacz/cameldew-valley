@@ -39,50 +39,50 @@ let shop_region _ =
 (** [get_facing_tile_(DIRECTION)] checks that get_facing_tile returns the tile
     directly in front of the player based on their facing. *)
 let get_facing_tile_SOUTH _ =
-  let b = B.create_board 3 3 in
+  let b = B.create_board 300 300 in
   let p = P.create_player 1 1 0 in
   let fx, fy, tile_opt = B.get_facing_tile b p in
-  assert_equal 1 fx;
-  assert_equal 2 fy;
+  assert_equal 56 fx;
+  assert_equal 231 fy;
   match tile_opt with
   | Some B.Path -> ()
   | _ -> assert_failure "Expected Path in front of player"
 
 let get_facing_tile_EAST _ =
-  let b = B.create_board 3 3 in
+  let b = B.create_board 200 200 in
   let p0 = P.create_player 1 1 0 in
   let p = { p0 with facing = P.East } in
   let fx, fy, tile_opt = B.get_facing_tile b p in
-  assert_equal 2 fx;
-  assert_equal 1 fy;
+  assert_equal 121 fx;
+  assert_equal 191 fy;
   match tile_opt with
   | Some B.Path -> ()
   | _ -> assert_failure "Expected Path"
 
 let get_facing_tile_NORTH _ =
-  let b = B.create_board 3 3 in
+  let b = B.create_board 300 300 in
   let p0 = P.create_player 1 1 0 in
   let p = { p0 with facing = P.North } in
   let fx, fy, tile_opt = B.get_facing_tile b p in
-  assert_equal 1 fx;
-  assert_equal 0 fy;
+  assert_equal 56 fx;
+  assert_equal 121 fy;
   match tile_opt with
   | Some B.Path -> ()
   | _ -> assert_failure "Expected Path"
 
 let get_facing_tile_WEST _ =
-  let b = B.create_board 3 3 in
-  let p0 = P.create_player 1 1 0 in
+  let b = B.create_board 300 300 in
+  let p0 = P.create_player 30 1 0 in
   let p = { p0 with facing = P.West } in
   let fx, fy, tile_opt = B.get_facing_tile b p in
-  assert_equal 0 fx;
-  assert_equal 1 fy;
+  assert_equal 10 fx;
+  assert_equal 191 fy;
   match tile_opt with
   | Some B.Path -> ()
   | _ -> assert_failure "Expected Path"
 
 let test_nearest_point _ =
-  let p0 = P.create_player 415 370 0 in
+  let p0 = P.create_player 475 510 0 in
   let point = B.get_nearest_soil_point p0.x p0.y in
   assert_equal (Some (415, 370)) point;
   match point with
