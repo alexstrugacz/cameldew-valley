@@ -22,7 +22,7 @@ Then install pkg-config using homebrew with the following command:
 
 - brew install pkg-config sqlite
 
-You will also need to install raylib and sqlite3 with the following commands:
+You will also need to install ounit2, raylib, and sqlite3 with the following commands:
 
 - opam install ounit2
 - opam install raylib
