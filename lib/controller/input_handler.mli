@@ -6,11 +6,12 @@ type action =
   | Start
   | Exit
 
-(** [get_text_input ()] returns the character that was pressed, or None if no valid text input *)
 val get_text_input : unit -> char option
+(** [get_text_input ()] returns the character that was pressed, or None if no
+    valid text input *)
 
-(** [is_backspace_pressed ()] returns true if backspace was pressed *)
 val is_backspace_pressed : unit -> bool
+(** [is_backspace_pressed ()] returns true if backspace was pressed *)
 
 val check_input : unit -> action list
 (** [check_input] immediately returns a list of each [action] taken by the user
@@ -21,3 +22,4 @@ val print_inputs : action list -> unit
     testing) *)
 
 val pp_actions_from_inputs : action -> string
+(** Converts an [action] to a human-readable string. *)

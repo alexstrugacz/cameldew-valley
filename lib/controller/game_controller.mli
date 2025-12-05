@@ -32,7 +32,32 @@ val take_action :
   Model.Game_state.game_state ->
   Input_handler.action ->
   Model.Game_state.game_state
+(** [take_action state action] applies a player's [action] to the current
+    [state] of the game and returns the resulting updated state.
+
+    The output may change player position, interact with objects, place or
+    harvest crops, update inventory, or trigger other state-transition logic
+    depending on the given [action]. *)
 
 val try_grow_crop : Model.Crop.crop_instance -> Model.Crop.crop_instance
+(** [try_grow_crop crop] returns an updated crop instance after attempting to
+    advance its growth, delegating to [Crop.try_grow]
+
+    If [crop] is eligible to grow , its growth stage is incremented and
+    otherwise it is returned unchanged. *)
+
 val select_slot_index_crop_type : int -> Model.Crop.crop_kind
+(** [select_slot_index_crop_type i] maps a hotbar or inventory slot index [i] to
+    the corresponding crop kind used for shop purchases or UI selection.
+
+    The mapping is:
+    - 0 ↦ [Crop.Wheat]
+    - 1 ↦ [Crop.Strawberry]
+    - 2 ↦ [Crop.Grape]
+    - 3 ↦ [Crop.Tomato]
+    - 4 ↦ [Crop.Pumpkin] *)
+
 val get_random_crop_type : unit -> Model.Crop.crop_kind
+(** [get_random_crop_type ()] returns a random crop kind chosen uniformly
+    from the set {[Crop.Strawberry; Crop.Wheat; Crop.Tomato; Crop.Grape; 
+    Crop.Pumpkin]}.*)
