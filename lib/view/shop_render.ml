@@ -20,7 +20,7 @@ let messages =
     "CS3110 x_x";
     "What a nice day!";
     "I love stardew";
-    "Cobblestone Chi rocks!!";
+    "Cobblestone Chi!!";
   |]
 
 let current_message = ref messages.(0)
