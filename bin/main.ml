@@ -95,8 +95,9 @@ let () =
             GS.elapsed_time = !game_state.GS.elapsed_time +. delta_time;
           };
 
-        (* Check if game time is up *)
-        if !game_state.GS.elapsed_time >= game_duration then (
+        (* Check if game time is up (countdown reached 0) *)
+        let remaining_time = game_duration -. !game_state.GS.elapsed_time in
+        if remaining_time <= 0.0 then (
           (* Game ended - save score *)
           let final_coins = !game_state.GS.player.coins in
           LB.save_score final_username final_coins;
@@ -172,20 +173,42 @@ let () =
       (* Player layer logic *)
       let player = !game_state.GS.player in
       let board = !game_state.GS.board in
+
+      let renderables = ref [] in
+
+      (* Add crops *)
       B.board_iterate
         (fun x y tile ->
           match tile with
           | B.Soil (Some crop) ->
-              CR.draw_crop crop (float_of_int x) (float_of_int y)
+              let wy = float_of_int y in
+              renderables :=
+                ( wy,
+                  fun () -> CR.draw_crop crop (float_of_int x) (float_of_int y)
+                )
+                :: !renderables
           | _ -> ())
         board;
 
-      PR.draw_player player delta_time moving;
+      (* Add player *)
+      renderables :=
+        ( float_of_int player.P.y,
+          fun () -> PR.draw_player player delta_time moving )
+        :: !renderables;
+
+      (* Sort by Y *)
+      let sorted =
+        List.sort (fun (y1, _) (y2, _) -> compare (y1 +. 75.0) y2) !renderables
+      in
+
+      (* Draw all *)
+      List.iter (fun (_, draw_fn) -> draw_fn ()) sorted;
 
       (* Draw UI elements *)
       IR.draw_inventory player;
       CO.draw_coin player;
-      CL.draw_clock !game_state.GS.elapsed_time;
+      let remaining_time = game_duration -. !game_state.GS.elapsed_time in
+      CL.draw_clock (max 0.0 remaining_time);
 
       (* ------------------------- *)
       (* Draw Shop if open *)

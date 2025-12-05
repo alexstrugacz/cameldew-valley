@@ -13,53 +13,58 @@ type action =
 
 (** [get_text_input ()] returns the character that was pressed, or None if no
     valid text input *)
-let[@coverage off] get_text_input () =
+let get_text_input () =
   let open Raylib in
-  let add_char c = Some c in
-  if is_key_pressed Key.A then add_char 'a'
-  else if is_key_pressed Key.B then add_char 'b'
-  else if is_key_pressed Key.C then add_char 'c'
-  else if is_key_pressed Key.D then add_char 'd'
-  else if is_key_pressed Key.E then add_char 'e'
-  else if is_key_pressed Key.F then add_char 'f'
-  else if is_key_pressed Key.G then add_char 'g'
-  else if is_key_pressed Key.H then add_char 'h'
-  else if is_key_pressed Key.I then add_char 'i'
-  else if is_key_pressed Key.J then add_char 'j'
-  else if is_key_pressed Key.K then add_char 'k'
-  else if is_key_pressed Key.L then add_char 'l'
-  else if is_key_pressed Key.M then add_char 'm'
-  else if is_key_pressed Key.N then add_char 'n'
-  else if is_key_pressed Key.O then add_char 'o'
-  else if is_key_pressed Key.P then add_char 'p'
-  else if is_key_pressed Key.Q then add_char 'q'
-  else if is_key_pressed Key.R then add_char 'r'
-  else if is_key_pressed Key.S then add_char 's'
-  else if is_key_pressed Key.T then add_char 't'
-  else if is_key_pressed Key.U then add_char 'u'
-  else if is_key_pressed Key.V then add_char 'v'
-  else if is_key_pressed Key.W then add_char 'w'
-  else if is_key_pressed Key.X then add_char 'x'
-  else if is_key_pressed Key.Y then add_char 'y'
-  else if is_key_pressed Key.Z then add_char 'z'
-  else if is_key_pressed Key.Zero then add_char '0'
-  else if is_key_pressed Key.One then add_char '1'
-  else if is_key_pressed Key.Two then add_char '2'
-  else if is_key_pressed Key.Three then add_char '3'
-  else if is_key_pressed Key.Four then add_char '4'
-  else if is_key_pressed Key.Five then add_char '5'
-  else if is_key_pressed Key.Six then add_char '6'
-  else if is_key_pressed Key.Seven then add_char '7'
-  else if is_key_pressed Key.Eight then add_char '8'
-  else if is_key_pressed Key.Nine then add_char '9'
-  else None
+  let keys =
+    [
+      (Key.A, 'a');
+      (Key.B, 'b');
+      (Key.C, 'c');
+      (Key.D, 'd');
+      (Key.E, 'e');
+      (Key.F, 'f');
+      (Key.G, 'g');
+      (Key.H, 'h');
+      (Key.I, 'i');
+      (Key.J, 'j');
+      (Key.K, 'k');
+      (Key.L, 'l');
+      (Key.M, 'm');
+      (Key.N, 'n');
+      (Key.O, 'o');
+      (Key.P, 'p');
+      (Key.Q, 'q');
+      (Key.R, 'r');
+      (Key.S, 's');
+      (Key.T, 't');
+      (Key.U, 'u');
+      (Key.V, 'v');
+      (Key.W, 'w');
+      (Key.X, 'x');
+      (Key.Y, 'y');
+      (Key.Z, 'z');
+      (Key.Zero, '0');
+      (Key.One, '1');
+      (Key.Two, '2');
+      (Key.Three, '3');
+      (Key.Four, '4');
+      (Key.Five, '5');
+      (Key.Six, '6');
+      (Key.Seven, '7');
+      (Key.Eight, '8');
+      (Key.Nine, '9');
+    ]
+  in
+  match List.find_opt (fun (key, _) -> is_key_pressed key) keys with
+  | Some (_, ch) -> Some ch
+  | None -> None
 
 (** [is_backspace_pressed ()] returns true if backspace was pressed *)
-let[@coverage off] is_backspace_pressed () =
+let is_backspace_pressed () =
   let open Raylib in
   is_key_pressed Key.Backspace
 
-let[@coverage off] check_input () =
+let check_input () =
   let open Raylib in
   let inputs = ref [] in
 
