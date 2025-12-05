@@ -95,8 +95,9 @@ let () =
             GS.elapsed_time = !game_state.GS.elapsed_time +. delta_time;
           };
 
-        (* Check if game time is up *)
-        if !game_state.GS.elapsed_time >= game_duration then (
+        (* Check if game time is up (countdown reached 0) *)
+        let remaining_time = game_duration -. !game_state.GS.elapsed_time in
+        if remaining_time <= 0.0 then (
           (* Game ended - save score *)
           let final_coins = !game_state.GS.player.coins in
           LB.save_score final_username final_coins;
@@ -185,7 +186,8 @@ let () =
       (* Draw UI elements *)
       IR.draw_inventory player;
       CO.draw_coin player;
-      CL.draw_clock !game_state.GS.elapsed_time;
+      let remaining_time = game_duration -. !game_state.GS.elapsed_time in
+      CL.draw_clock (max 0.0 remaining_time);
 
       (* ------------------------- *)
       (* Draw Shop if open *)
