@@ -16,10 +16,7 @@ val interact_with_shop :
     game accordingly*)
 
 val interact_with_soil :
-  Model.Game_state.game_state ->
-  int ->
-  int ->
-  Model.Game_state.game_state
+  Model.Game_state.game_state -> int -> int -> Model.Game_state.game_state
 (** [interact_with_soil gs x y crop] processes an interaction with a soil tile
     at coordinates [(x, y)] that contains [crop].
 
@@ -37,3 +34,5 @@ val take_action :
   Model.Game_state.game_state
 
 val try_grow_crop : Model.Crop.crop_instance -> Model.Crop.crop_instance
+val select_slot_index_crop_type : int -> Model.Crop.crop_kind
+val get_random_crop_type : unit -> Model.Crop.crop_kind
