@@ -7,4 +7,4 @@
 
 # Collaborators:
 
-- None
+- Some genAI like ChatGPT used to help with documentation or understanding Raylib syntax.
