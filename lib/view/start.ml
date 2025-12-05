@@ -99,6 +99,19 @@ let get_username () =
         draw_text_ex username_font instruction
           (Vector2.create (inst_x +. 2.0) (inst_y +. 2.0))
           inst_size prompt_spacing Color.white;
+        let instruction = "Press P during game to see instructions" in
+        let inst_size = 14.0 in
+        let inst_size_vec =
+          measure_text_ex username_font instruction inst_size prompt_spacing
+        in
+        let inst_x = (1280.0 -. Vector2.x inst_size_vec) /. 2.0 in
+        let inst_y = 630.0 in
+        draw_text_ex username_font instruction
+          (Vector2.create inst_x inst_y)
+          inst_size prompt_spacing Color.black;
+        draw_text_ex username_font instruction
+          (Vector2.create (inst_x +. 2.0) (inst_y +. 2.0))
+          inst_size prompt_spacing Color.white;
 
         (* Handle text input *)
         (match I.get_text_input () with
