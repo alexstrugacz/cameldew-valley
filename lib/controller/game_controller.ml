@@ -64,7 +64,7 @@ let interact_with_soil gs tile_x tile_y =
             (* Harvest a crop *)
             let player' = P.harvest_and_sell player crop in
             let player'' =
-              match P.add_seeds player' crop.stats.kind 3 with
+              match P.add_seeds player' crop.stats.kind 1 with
               | Some p -> p
               | None -> player'
             in
