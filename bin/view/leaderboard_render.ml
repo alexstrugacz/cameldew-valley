@@ -122,7 +122,7 @@ let draw_leaderboard scores =
       let inst_x =
         (float_of_int screen_width -. Vector2.x inst_size_vec) /. 2.0
       in
-      let inst_y = float_of_int screen_height -. 100.0 in
+      let inst_y = float_of_int screen_height -. 75.0 in
       draw_text_ex f instruction
         (Vector2.create inst_x inst_y)
         inst_size score_spacing Color.lightgray
