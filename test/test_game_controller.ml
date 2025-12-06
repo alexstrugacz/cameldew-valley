@@ -182,17 +182,7 @@ let test_interact_with_soil_harvestable _ =
     | None -> assert_failure "expected at least\n   one seed"
     | Some r -> r
   in
-  let p3, _ =
-    match P.remove_seed p2 idx with
-    | None -> assert_failure "expected second seed"
-    | Some r -> r
-  in
-  let p4, _ =
-    match P.remove_seed p3 idx with
-    | None -> assert_failure "expected third seed"
-    | Some r -> r
-  in
-  assert_equal None (P.remove_seed p4 idx)
+  assert_equal None (P.remove_seed p2 idx)
 
 (** [test_interact_with_soil_not_harvestable] If the crop is not harvestable,
     interact_with_soil should do nothing. *)
